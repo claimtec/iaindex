@@ -1,0 +1,172 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "domain": "example-blog.com",
+    "publisher_id": "example-blog.com",
+    "email": "hello@example-blog.com",
+    "name": "Tech Insights Blog",
+    "verified": true,
+    "verification_method": "dns",
+    "verified_at": "2025-10-01T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "cms": "WordPress",
+      "content_license": "CC BY 4.0",
+      "posts_count": 50,
+      "categories": ["AI", "Web Development", "Software Engineering"]
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "domain": "techgear-shop.com",
+    "publisher_id": "techgear-shop.com",
+    "email": "support@techgear-shop.com",
+    "name": "TechGear Shop",
+    "verified": true,
+    "verification_method": "file",
+    "verified_at": "2025-10-02T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "platform": "Shopify",
+      "product_count": 150,
+      "categories": ["Keyboards", "Mice", "Adapters", "Stands", "Webcams"],
+      "currency": "USD"
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "domain": "cloudforge-docs.dev",
+    "publisher_id": "cloudforge-docs.dev",
+    "email": "docs@cloudforge.dev",
+    "name": "CloudForge Documentation",
+    "verified": true,
+    "verification_method": "dns",
+    "verified_at": "2025-10-03T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "platform": "Docusaurus",
+      "version": "2.5.0",
+      "pages": 50,
+      "language": "en"
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "domain": "technews-daily.com",
+    "publisher_id": "technews-daily.com",
+    "email": "editor@technews-daily.com",
+    "name": "TechNews Daily",
+    "verified": true,
+    "verification_method": "meta",
+    "verified_at": "2025-09-28T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "cms": "Ghost",
+      "posts_count": 500,
+      "update_frequency": "daily",
+      "newsletter_subscribers": 25000
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "domain": "learncode.io",
+    "publisher_id": "learncode.io",
+    "email": "info@learncode.io",
+    "name": "LearnCode",
+    "verified": true,
+    "verification_method": "dns",
+    "verified_at": "2025-09-25T00:00:00Z",
+    "subscription_tier": "enterprise",
+    "metadata": {
+      "platform": "Custom",
+      "courses": 50,
+      "students": 100000,
+      "languages": ["JavaScript", "Python", "Go", "Rust"]
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "domain": "apiforge.dev",
+    "publisher_id": "apiforge.dev",
+    "email": "support@apiforge.dev",
+    "name": "APIForge",
+    "verified": true,
+    "verification_method": "dns",
+    "verified_at": "2025-09-20T00:00:00Z",
+    "subscription_tier": "enterprise",
+    "metadata": {
+      "api_endpoints": 150,
+      "rate_limit": "10000/day",
+      "sla": "99.9%",
+      "regions": ["US", "EU", "APAC"]
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "domain": "taskmaster.app",
+    "publisher_id": "taskmaster.app",
+    "email": "hello@taskmaster.app",
+    "name": "TaskMaster",
+    "verified": true,
+    "verification_method": "file",
+    "verified_at": "2025-09-15T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "product_type": "SaaS",
+      "users": 50000,
+      "features": ["Task Management", "Team Collaboration", "Time Tracking"],
+      "pricing": "Freemium"
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440007",
+    "domain": "ai-research-lab.org",
+    "publisher_id": "ai-research-lab.org",
+    "email": "contact@ai-research-lab.org",
+    "name": "AI Research Lab",
+    "verified": true,
+    "verification_method": "dns",
+    "verified_at": "2025-09-10T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "papers": 100,
+      "datasets": 20,
+      "research_areas": ["NLP", "Computer Vision", "Robotics"],
+      "open_source": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "domain": "digitalmedia-hub.com",
+    "publisher_id": "digitalmedia-hub.com",
+    "email": "info@digitalmedia-hub.com",
+    "name": "Digital Media Hub",
+    "verified": true,
+    "verification_method": "meta",
+    "verified_at": "2025-09-05T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "content_types": ["video", "audio", "text"],
+      "videos": 1000,
+      "podcasts": 200,
+      "articles": 5000
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440009",
+    "domain": "opensource-toolkit.dev",
+    "publisher_id": "opensource-toolkit.dev",
+    "email": "maintainers@opensource-toolkit.dev",
+    "name": "OpenSource Toolkit",
+    "verified": true,
+    "verification_method": "dns",
+    "verified_at": "2025-09-01T00:00:00Z",
+    "subscription_tier": "verified",
+    "metadata": {
+      "license": "MIT",
+      "stars": 15000,
+      "contributors": 150,
+      "language": "TypeScript"
+    }
+  }
+]

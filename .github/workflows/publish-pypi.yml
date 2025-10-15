@@ -1,0 +1,178 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish'
+        required: true
+        type: choice
+        options:
+          - sdk-python
+          - merkle
+          - all
+
+jobs:
+  publish-sdk-python:
+    name: Publish Python SDK
+    runs-on: ubuntu-latest
+    if: github.event.inputs.package == 'sdk-python' || github.event.inputs.package == 'all' || github.event_name == 'release'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install build twine
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+        working-directory: ./packages/sdk-python
+
+      - name: Run tests
+        run: pytest
+        working-directory: ./packages/sdk-python
+
+      - name: Run linters
+        run: |
+          pylint iaindex
+          black --check .
+          mypy iaindex
+        working-directory: ./packages/sdk-python
+
+      - name: Build package
+        run: python -m build
+        working-directory: ./packages/sdk-python
+
+      - name: Check distribution
+        run: twine check dist/*
+        working-directory: ./packages/sdk-python
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(python -c "import tomli; print(tomli.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version $VERSION"
+        working-directory: ./packages/sdk-python
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: ./packages/sdk-python/dist/
+
+      - name: Create Git tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git tag sdk-python-v${{ steps.version.outputs.version }}
+          git push origin sdk-python-v${{ steps.version.outputs.version }}
+
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: sdk-python-v${{ steps.version.outputs.version }}
+          release_name: SDK Python v${{ steps.version.outputs.version }}
+          body: |
+            Python SDK release v${{ steps.version.outputs.version }}
+
+            Install with:
+            ```
+            pip install iaindex-sdk==${{ steps.version.outputs.version }}
+            ```
+
+            [View on PyPI](https://pypi.org/project/iaindex-sdk/${{ steps.version.outputs.version }})
+          draft: false
+          prerelease: false
+
+  publish-merkle:
+    name: Publish Merkle Package
+    runs-on: ubuntu-latest
+    if: github.event.inputs.package == 'merkle' || github.event.inputs.package == 'all'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install build twine
+          pip install -r requirements.txt
+        working-directory: ./infra/merkle
+
+      - name: Create package structure
+        run: |
+          # Create setup.py if it doesn't exist
+          cat > setup.py << 'EOF'
+          from setuptools import setup, find_packages
+
+          setup(
+              name="iaindex-merkle",
+              version="1.0.0",
+              description="Merkle attestation system for IA Index",
+              author="IA Index Team",
+              packages=find_packages(),
+              install_requires=[
+                  "supabase>=2.0.0",
+                  "boto3>=1.28.0",
+              ],
+              python_requires=">=3.9",
+          )
+          EOF
+        working-directory: ./infra/merkle
+
+      - name: Build package
+        run: python -m build
+        working-directory: ./infra/merkle
+
+      - name: Check distribution
+        run: twine check dist/*
+        working-directory: ./infra/merkle
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: ./infra/merkle/dist/
+
+  notify:
+    name: Notify Publication
+    runs-on: ubuntu-latest
+    needs: [publish-sdk-python]
+    if: always()
+
+    steps:
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: 'PyPI packages published'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Update documentation
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: update-docs
+          client-payload: '{"package": "python-sdk", "version": "${{ needs.publish-sdk-python.outputs.version }}"}'

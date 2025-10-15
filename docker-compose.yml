@@ -1,0 +1,169 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: iaindex-postgres
+    environment:
+      POSTGRES_USER: iaindex
+      POSTGRES_PASSWORD: iaindex_dev
+      POSTGRES_DB: iaindex_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U iaindex"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: iaindex-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Service
+  api:
+    build:
+      context: .
+      dockerfile: ./packages/api/Dockerfile
+    container_name: iaindex-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://iaindex:iaindex_dev@postgres:5432/iaindex_dev
+      REDIS_URL: redis://redis:6379
+      PORT: 3000
+      LOG_LEVEL: debug
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_KEY: ${SUPABASE_KEY}
+      JWT_SECRET: dev_jwt_secret_change_in_production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./packages/api:/app
+      - /app/node_modules
+    command: npm run dev
+    restart: unless-stopped
+
+  # Web Dashboard
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: iaindex-web
+    ports:
+      - "3001:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+      NODE_ENV: development
+    depends_on:
+      - api
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+    restart: unless-stopped
+
+  # Documentation Site
+  docs:
+    build:
+      context: .
+      dockerfile: ./apps/docs/Dockerfile
+    container_name: iaindex-docs
+    ports:
+      - "3002:3000"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./apps/docs:/app
+      - /app/node_modules
+      - /app/build
+    command: npm run start
+    restart: unless-stopped
+
+  # Merkle Cron Job
+  merkle-cron:
+    build:
+      context: .
+      dockerfile: ./infra/merkle/Dockerfile
+    container_name: iaindex-merkle-cron
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_KEY: ${SUPABASE_KEY}
+      S3_BUCKET: ${S3_BUCKET:-}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      LOCAL_STORAGE_PATH: /attestations
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./infra/merkle:/app
+      - ./attestations:/attestations
+    command: python cron.py --mode scheduled --time 00:00 --storage local
+    restart: unless-stopped
+
+  # Adminer (Database Management)
+  adminer:
+    image: adminer:latest
+    container_name: iaindex-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: dracula
+    restart: unless-stopped
+
+  # MinIO (S3-compatible storage for local development)
+  minio:
+    image: minio/minio:latest
+    container_name: iaindex-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+
+networks:
+  default:
+    name: iaindex-network

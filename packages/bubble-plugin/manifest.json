@@ -1,0 +1,412 @@
+{
+  "name": "AIIndex",
+  "version": "1.0.0",
+  "description": "Official AIIndex plugin for Bubble.io - Generate AI Index JSON, verify domains, and manage AI content access receipts",
+  "author": "AIIndex",
+  "author_email": "support@aiindex.org",
+  "website": "https://aiindex.org",
+  "documentation_url": "https://docs.aiindex.org/bubble",
+  "icon": "https://cdn.aiindex.org/bubble/icon.png",
+  "category": "API Integration",
+  "plugin_type": "Full",
+
+  "api_connections": [
+    {
+      "name": "AIIndex API",
+      "description": "Connect to AIIndex API v1",
+      "base_url": "https://api.aiindex.org/v1",
+      "authentication": {
+        "type": "bearer",
+        "key_name": "API Key",
+        "key_location": "header"
+      }
+    }
+  ],
+
+  "data_types": [
+    {
+      "name": "AIIndex Document",
+      "fields": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "description": "Unique document ID"
+        },
+        {
+          "name": "domain",
+          "type": "text",
+          "description": "Domain of the indexed site"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "description": "Page URL"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "description": "Page title"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "description": "Page description"
+        },
+        {
+          "name": "content",
+          "type": "text",
+          "description": "Page content"
+        },
+        {
+          "name": "published_date",
+          "type": "date",
+          "description": "Publication date"
+        },
+        {
+          "name": "updated_date",
+          "type": "date",
+          "description": "Last update date"
+        },
+        {
+          "name": "author",
+          "type": "text",
+          "description": "Content author"
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "description": "Content category"
+        },
+        {
+          "name": "tags",
+          "type": "list of texts",
+          "description": "Content tags"
+        },
+        {
+          "name": "crawlable",
+          "type": "boolean",
+          "description": "Is content crawlable"
+        },
+        {
+          "name": "ai_trainable",
+          "type": "boolean",
+          "description": "Can be used for AI training"
+        },
+        {
+          "name": "verification_status",
+          "type": "text",
+          "description": "Domain verification status"
+        },
+        {
+          "name": "last_synced",
+          "type": "date",
+          "description": "Last sync timestamp"
+        }
+      ]
+    },
+    {
+      "name": "AIIndex Receipt",
+      "fields": [
+        {
+          "name": "receipt_id",
+          "type": "text",
+          "description": "Unique receipt ID"
+        },
+        {
+          "name": "document_id",
+          "type": "text",
+          "description": "Referenced document ID"
+        },
+        {
+          "name": "ai_provider",
+          "type": "text",
+          "description": "AI provider name"
+        },
+        {
+          "name": "access_type",
+          "type": "text",
+          "description": "Type of access (crawl, training, etc.)"
+        },
+        {
+          "name": "timestamp",
+          "type": "date",
+          "description": "Access timestamp"
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "description": "Receipt status"
+        }
+      ]
+    }
+  ],
+
+  "elements": [
+    {
+      "name": "AIIndex Badge",
+      "type": "visual",
+      "description": "Display AIIndex verification badge",
+      "fields": [
+        {
+          "name": "domain",
+          "type": "text",
+          "default": "Current page domain"
+        },
+        {
+          "name": "theme",
+          "type": "dropdown",
+          "options": ["dark", "light", "purple", "blue", "green"],
+          "default": "dark"
+        },
+        {
+          "name": "size",
+          "type": "dropdown",
+          "options": ["small", "medium", "large"],
+          "default": "medium"
+        },
+        {
+          "name": "position",
+          "type": "dropdown",
+          "options": ["top-left", "top-right", "bottom-left", "bottom-right"],
+          "default": "bottom-right"
+        },
+        {
+          "name": "show_pulse",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "Verification Status",
+      "type": "visual",
+      "description": "Display domain verification status",
+      "fields": [
+        {
+          "name": "domain",
+          "type": "text",
+          "default": "Current page domain"
+        },
+        {
+          "name": "show_icon",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "name": "compact_mode",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    }
+  ],
+
+  "actions": [
+    {
+      "name": "Generate AI Index JSON",
+      "category": "Data",
+      "description": "Generate and sync AI Index JSON from Bubble database",
+      "fields": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true,
+          "description": "Domain to generate index for"
+        },
+        {
+          "name": "data_source",
+          "type": "text",
+          "required": true,
+          "description": "Data type to index"
+        },
+        {
+          "name": "auto_sync",
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically sync to AIIndex API"
+        }
+      ],
+      "exposed_fields": [
+        {
+          "name": "document_count",
+          "type": "number"
+        },
+        {
+          "name": "sync_status",
+          "type": "text"
+        },
+        {
+          "name": "json_url",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Send Access Receipt",
+      "category": "Data",
+      "description": "Send an access receipt to AIIndex",
+      "fields": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true,
+          "description": "Document ID being accessed"
+        },
+        {
+          "name": "ai_provider",
+          "type": "text",
+          "required": true,
+          "description": "AI provider name"
+        },
+        {
+          "name": "access_type",
+          "type": "dropdown",
+          "options": ["crawl", "training", "inference", "analysis"],
+          "default": "crawl"
+        }
+      ],
+      "exposed_fields": [
+        {
+          "name": "receipt_id",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "timestamp",
+          "type": "date"
+        }
+      ]
+    },
+    {
+      "name": "Verify Domain with AIIndex",
+      "category": "Settings",
+      "description": "Verify domain ownership with AIIndex",
+      "fields": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true,
+          "description": "Domain to verify"
+        },
+        {
+          "name": "verification_method",
+          "type": "dropdown",
+          "options": ["dns", "html", "meta"],
+          "default": "dns"
+        }
+      ],
+      "exposed_fields": [
+        {
+          "name": "verification_status",
+          "type": "text"
+        },
+        {
+          "name": "verification_token",
+          "type": "text"
+        },
+        {
+          "name": "instructions",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Get AIIndex Status",
+      "category": "Data",
+      "description": "Get current AIIndex status for domain",
+      "fields": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true,
+          "description": "Domain to check"
+        }
+      ],
+      "exposed_fields": [
+        {
+          "name": "is_verified",
+          "type": "boolean"
+        },
+        {
+          "name": "document_count",
+          "type": "number"
+        },
+        {
+          "name": "last_sync",
+          "type": "date"
+        },
+        {
+          "name": "sync_status",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Update AIIndex Document",
+      "category": "Data",
+      "description": "Update a specific document in AIIndex",
+      "fields": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "description",
+          "type": "text"
+        },
+        {
+          "name": "content",
+          "type": "text"
+        },
+        {
+          "name": "crawlable",
+          "type": "boolean"
+        },
+        {
+          "name": "ai_trainable",
+          "type": "boolean"
+        }
+      ],
+      "exposed_fields": [
+        {
+          "name": "success",
+          "type": "boolean"
+        },
+        {
+          "name": "updated_at",
+          "type": "date"
+        }
+      ]
+    }
+  ],
+
+  "events": [
+    {
+      "name": "AIIndex Sync Complete",
+      "description": "Triggered when AI Index sync completes"
+    },
+    {
+      "name": "Domain Verified",
+      "description": "Triggered when domain verification succeeds"
+    },
+    {
+      "name": "Receipt Sent",
+      "description": "Triggered when access receipt is sent"
+    }
+  ],
+
+  "shared_headers": [
+    {
+      "key": "X-AIIndex-Plugin",
+      "value": "Bubble/1.0.0"
+    }
+  ]
+}

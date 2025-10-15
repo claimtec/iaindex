@@ -1,0 +1,386 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aiindex.org/schemas/v1.1/aiindex.schema.json",
+  "title": "AIIndex Protocol Schema v1.1",
+  "description": "Enhanced format for AI-readable website metadata with provenance, consent, and rendering support",
+  "type": "object",
+  "required": [
+    "version",
+    "publisher_id",
+    "domain",
+    "last_updated"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Protocol version",
+      "pattern": "^1\\.(0|1)$",
+      "default": "1.1"
+    },
+    "publisher_id": {
+      "type": "string",
+      "description": "Unique publisher identifier (verified domain or UUID)",
+      "minLength": 3,
+      "maxLength": 255
+    },
+    "domain": {
+      "type": "string",
+      "description": "Primary domain hosting this file",
+      "format": "hostname"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of last update",
+      "format": "date-time"
+    },
+    "publisher": {
+      "type": "object",
+      "description": "Publisher information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Publisher display name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief publisher description"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Publisher homepage URL"
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "logo": {
+          "type": "string",
+          "format": "uri",
+          "description": "Logo image URL"
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "description": "Structured entities (people, organizations, products)",
+      "items": {
+        "type": "object",
+        "required": ["type", "name"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["Person", "Organization", "Product", "Service", "Event", "Place"]
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "description": "Indexed pages and content",
+      "items": {
+        "type": "object",
+        "required": ["url", "title"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "content_type": {
+            "type": "string",
+            "enum": ["article", "page", "product", "documentation", "faq", "about"]
+          },
+          "published": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summary": {
+            "type": "string",
+            "description": "AI-friendly content summary",
+            "maxLength": 2000
+          },
+          "rendered_text": {
+            "type": "string",
+            "description": "Rendered plain text from dynamic content (v1.1)",
+            "maxLength": 50000
+          },
+          "content_hash": {
+            "type": "string",
+            "description": "SHA-256 hash of rendered content (v1.1)",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "faq": {
+      "type": "array",
+      "description": "Frequently asked questions",
+      "items": {
+        "type": "object",
+        "required": ["question", "answer"],
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "description": "AI access control policy (v1.1 enhanced)",
+      "properties": {
+        "training": {
+          "type": "string",
+          "enum": ["allow", "block", "require_offer"],
+          "description": "Model training policy",
+          "default": "allow"
+        },
+        "retrieval": {
+          "type": "string",
+          "enum": ["allow", "block"],
+          "description": "Retrieval/RAG policy",
+          "default": "allow"
+        },
+        "attribution_required": {
+          "type": "boolean",
+          "description": "Whether attribution is required",
+          "default": true
+        },
+        "commercial_use": {
+          "type": "boolean",
+          "description": "Whether commercial AI use is permitted",
+          "default": true
+        },
+        "rate_hint": {
+          "type": "integer",
+          "description": "Suggested requests per minute",
+          "minimum": 1,
+          "maximum": 10000
+        }
+      }
+    },
+    "receipts": {
+      "type": "object",
+      "description": "Receipt requirements (v1.1)",
+      "properties": {
+        "require_signed": {
+          "type": "boolean",
+          "description": "Whether cryptographic receipts are required",
+          "default": false
+        },
+        "webhook_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to receive access receipts"
+        },
+        "supported_algorithms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["ES256", "ES384", "ES512", "RS256", "RS384", "RS512"]
+          },
+          "description": "Accepted signature algorithms"
+        }
+      }
+    },
+    "render_fallback": {
+      "type": "object",
+      "description": "Dynamic content rendering configuration (v1.1)",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["edge", "local", "none"],
+          "description": "Rendering mode",
+          "default": "none"
+        },
+        "last_rendered_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of last render"
+        },
+        "content_hash": {
+          "type": "string",
+          "description": "SHA-256 hash of rendered content",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "ttl": {
+          "type": "integer",
+          "description": "Cache TTL in seconds",
+          "minimum": 60,
+          "maximum": 2592000
+        }
+      }
+    },
+    "embeddings_manifest": {
+      "type": "object",
+      "description": "Vector embeddings configuration (v1.1 optional)",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "Embedding model used",
+          "examples": ["text-embedding-ada-002", "all-MiniLM-L6-v2"]
+        },
+        "dimensions": {
+          "type": "integer",
+          "description": "Vector dimensions",
+          "minimum": 128,
+          "maximum": 4096
+        },
+        "vector_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to retrieve vectors"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of last embedding update"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["json", "parquet", "npy"],
+          "description": "Vector storage format"
+        }
+      }
+    },
+    "c2pa_provenance": {
+      "type": "object",
+      "description": "C2PA Content Credentials integration (v1.1 optional)",
+      "properties": {
+        "credential_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to C2PA manifest.json"
+        },
+        "asset_digest": {
+          "type": "string",
+          "description": "SHA-256 digest of primary asset",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "signer_kid": {
+          "type": "string",
+          "description": "Key ID of C2PA signer"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of credential creation"
+        },
+        "claim_generator": {
+          "type": "string",
+          "description": "Tool/service that generated claim",
+          "examples": ["AIIndex v1.1", "Adobe Content Authenticity"]
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "description": "Cryptographic signature for verification",
+      "required": ["algorithm", "kid", "signature", "document_hash"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["ES256", "ES384", "ES512", "RS256", "RS384", "RS512"],
+          "description": "Signature algorithm"
+        },
+        "kid": {
+          "type": "string",
+          "description": "Key ID for signature verification"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Base64-encoded signature"
+        },
+        "document_hash": {
+          "type": "string",
+          "description": "SHA-256 hash of signed content"
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "AIIndex network verification status",
+      "properties": {
+        "verified": {
+          "type": "boolean",
+          "description": "Whether publisher is verified"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verification_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to verification proof"
+        },
+        "badge_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to verification badge (v1.1)"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional custom metadata",
+      "additionalProperties": true
+    }
+  }
+}

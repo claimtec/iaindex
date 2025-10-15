@@ -1,0 +1,31 @@
+{
+  "name": "@iaindex/framer-plugin",
+  "version": "1.0.0",
+  "description": "Framer plugin for AI Index integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "framer",
+    "plugin",
+    "ai-index",
+    "llm",
+    "seo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "framer": "^2.0.0",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "framer": "^2.0.0",
+    "react": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}

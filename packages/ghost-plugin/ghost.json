@@ -1,0 +1,45 @@
+{
+  "name": "AI Index",
+  "version": "1.0.0",
+  "description": "Automatically generate and expose AI Index JSON for AI assistant discovery",
+  "author": {
+    "name": "AI Index",
+    "email": "hello@example.com",
+    "url": "https://example.com"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "seo",
+    "discovery",
+    "chatgpt",
+    "claude"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-index"
+  },
+  "bugs": "https://github.com/yourusername/ai-index/issues",
+  "contributors": [],
+  "license": "MIT",
+  "config": {
+    "posts_per_page": 15,
+    "image_sizes": {
+      "xs": {
+        "width": 150
+      },
+      "s": {
+        "width": 300
+      },
+      "m": {
+        "width": 720
+      },
+      "l": {
+        "width": 960
+      },
+      "xl": {
+        "width": 1200
+      }
+    }
+  }
+}

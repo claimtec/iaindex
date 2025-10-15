@@ -1,0 +1,155 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish'
+        required: true
+        type: choice
+        options:
+          - sdk-js
+          - api
+          - all
+
+jobs:
+  publish-sdk-js:
+    name: Publish JavaScript SDK
+    runs-on: ubuntu-latest
+    if: github.event.inputs.package == 'sdk-js' || github.event.inputs.package == 'all' || github.event_name == 'release'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./packages/sdk-js
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./packages/sdk-js
+
+      - name: Build
+        run: npm run build
+        working-directory: ./packages/sdk-js
+
+      - name: Check version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version $VERSION"
+        working-directory: ./packages/sdk-js
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        working-directory: ./packages/sdk-js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Git tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git tag sdk-js-v${{ steps.version.outputs.version }}
+          git push origin sdk-js-v${{ steps.version.outputs.version }}
+
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: sdk-js-v${{ steps.version.outputs.version }}
+          release_name: SDK JS v${{ steps.version.outputs.version }}
+          body: |
+            JavaScript SDK release v${{ steps.version.outputs.version }}
+
+            Install with:
+            ```
+            npm install @iaindex/sdk-js@${{ steps.version.outputs.version }}
+            ```
+
+            [View on NPM](https://www.npmjs.com/package/@iaindex/sdk-js/v/${{ steps.version.outputs.version }})
+          draft: false
+          prerelease: false
+
+  publish-api-types:
+    name: Publish API Types
+    runs-on: ubuntu-latest
+    if: github.event.inputs.package == 'api' || github.event.inputs.package == 'all' || github.event_name == 'release'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./packages/api
+
+      - name: Build TypeScript declarations
+        run: npm run build:types
+        working-directory: ./packages/api
+
+      - name: Check version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        working-directory: ./packages/api
+
+      - name: Publish types to NPM
+        run: npm publish --access public
+        working-directory: ./packages/api
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  notify:
+    name: Notify Publication
+    runs-on: ubuntu-latest
+    needs: [publish-sdk-js, publish-api-types]
+    if: always()
+
+    steps:
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: 'NPM packages published'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify Twitter
+        if: success()
+        uses: ethomson/send-tweet-action@v1
+        with:
+          status: |
+            🎉 New release of IA Index SDKs!
+
+            📦 JavaScript SDK: npm install @iaindex/sdk-js
+            📚 Docs: https://docs.iaindex.dev
+
+            #AI #attestation #opensource
+          consumer-key: ${{ secrets.TWITTER_CONSUMER_KEY }}
+          consumer-secret: ${{ secrets.TWITTER_CONSUMER_SECRET }}
+          access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}

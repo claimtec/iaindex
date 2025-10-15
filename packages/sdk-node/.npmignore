@@ -1,0 +1,15 @@
+src/
+tsconfig.json
+.git
+.gitignore
+*.test.ts
+*.test.js
+node_modules/
+coverage/
+.nyc_output/
+.vscode/
+.idea/
+*.log
+.DS_Store
+examples/
+docs/

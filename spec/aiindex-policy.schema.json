@@ -1,0 +1,196 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aiindex.org/schemas/v1.1/aiindex-policy.schema.json",
+  "title": "AIIndex Policy File Schema",
+  "description": "Policy file served at /.well-known/aiindex-policy.json",
+  "type": "object",
+  "required": ["version", "domain", "policies"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Policy format version",
+      "pattern": "^1\\.(0|1)$",
+      "default": "1.1"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Domain this policy applies to",
+      "format": "hostname"
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this policy takes effect"
+    },
+    "policies": {
+      "type": "object",
+      "required": ["training", "retrieval"],
+      "properties": {
+        "training": {
+          "type": "object",
+          "description": "Model training access policy",
+          "properties": {
+            "allowed": {
+              "type": "boolean",
+              "description": "Whether training is permitted",
+              "default": true
+            },
+            "require_offer": {
+              "type": "boolean",
+              "description": "Whether commercial offer is required",
+              "default": false
+            },
+            "attribution_required": {
+              "type": "boolean",
+              "default": true
+            },
+            "allowed_models": {
+              "type": "array",
+              "description": "Specific models allowed (empty = all)",
+              "items": {
+                "type": "string"
+              }
+            },
+            "blocked_models": {
+              "type": "array",
+              "description": "Models explicitly blocked",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "retrieval": {
+          "type": "object",
+          "description": "Retrieval/RAG access policy",
+          "properties": {
+            "allowed": {
+              "type": "boolean",
+              "description": "Whether retrieval is permitted",
+              "default": true
+            },
+            "attribution_required": {
+              "type": "boolean",
+              "default": true
+            },
+            "max_context_length": {
+              "type": "integer",
+              "description": "Maximum characters per request",
+              "minimum": 100
+            }
+          }
+        },
+        "receipts": {
+          "type": "object",
+          "description": "Receipt requirements",
+          "properties": {
+            "required": {
+              "type": "boolean",
+              "description": "Whether receipts are mandatory",
+              "default": false
+            },
+            "webhook_url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "signature_required": {
+              "type": "boolean",
+              "default": false
+            },
+            "supported_algorithms": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["ES256", "ES384", "ES512", "RS256", "RS384", "RS512"]
+              }
+            }
+          }
+        },
+        "rate_limits": {
+          "type": "object",
+          "description": "Rate limiting configuration",
+          "properties": {
+            "requests_per_minute": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            },
+            "requests_per_day": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "burst_limit": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "client_allowlist": {
+      "type": "array",
+      "description": "Explicitly allowed client IDs (optional)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "client_blocklist": {
+      "type": "array",
+      "description": "Explicitly blocked client IDs",
+      "items": {
+        "type": "string"
+      }
+    },
+    "user_agent_patterns": {
+      "type": "object",
+      "description": "User-Agent pattern matching",
+      "properties": {
+        "allow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "block": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "description": "Contact for policy inquiries",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Related policy documents",
+      "properties": {
+        "terms_of_service": {
+          "type": "string",
+          "format": "uri"
+        },
+        "privacy_policy": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ai_index": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to full ai-index.json"
+        }
+      }
+    }
+  }
+}

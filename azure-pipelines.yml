@@ -1,0 +1,268 @@
+# Azure DevOps Pipeline for AIIndex v1.1
+# Triggers: Push to main, develop, and feature/* branches
+# Stages: Build, Test, Deploy (Staging), Deploy (Production)
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - feature/*
+      - hotfix/*
+  paths:
+    exclude:
+      - README.md
+      - docs/**/*.md
+      - '*.md'
+
+pr:
+  branches:
+    include:
+      - main
+      - develop
+
+variables:
+  # Azure Container Registry
+  containerRegistry: 'aiindexacr'
+  imageRepository: 'aiindex'
+
+  # Node.js version
+  nodeVersion: '20.x'
+
+  # Python version
+  pythonVersion: '3.11'
+
+  # PM2 ecosystem file
+  pm2Config: 'ecosystem.config.js'
+
+stages:
+  # ============================================================================
+  # BUILD STAGE
+  # ============================================================================
+  - stage: Build
+    displayName: 'Build and Test'
+    jobs:
+      # API Build and Test
+      - job: BuildAPI
+        displayName: 'Build API'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Use Python $(pythonVersion)'
+
+          - script: |
+              cd apps/api
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+            displayName: 'Install API dependencies'
+
+          - script: |
+              cd apps/api
+              python -m pytest tests/ -v --junitxml=test-results.xml
+            displayName: 'Run API tests'
+            continueOnError: true
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFiles: '**/test-results.xml'
+              testRunTitle: 'API Tests'
+            condition: always()
+
+      # Dashboard Build and Test
+      - job: BuildDashboard
+        displayName: 'Build Dashboard'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '$(nodeVersion)'
+            displayName: 'Use Node.js $(nodeVersion)'
+
+          - script: |
+              cd apps/web
+              npm ci
+            displayName: 'Install Dashboard dependencies'
+
+          - script: |
+              cd apps/web
+              npm run build
+            displayName: 'Build Dashboard'
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: 'apps/web/.next'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/dashboard.zip'
+            displayName: 'Archive Dashboard build'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'dashboard'
+            displayName: 'Publish Dashboard artifact'
+
+      # Documentation Build
+      - job: BuildDocs
+        displayName: 'Build Documentation'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '$(nodeVersion)'
+            displayName: 'Use Node.js $(nodeVersion)'
+
+          - script: |
+              cd apps/docs
+              npm ci
+            displayName: 'Install Docs dependencies'
+
+          - script: |
+              cd apps/docs
+              npm run build
+            displayName: 'Build Documentation'
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: 'apps/docs/build'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/docs.zip'
+            displayName: 'Archive Docs build'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'docs'
+            displayName: 'Publish Docs artifact'
+
+  # ============================================================================
+  # DEPLOY TO STAGING
+  # ============================================================================
+  - stage: DeployStaging
+    displayName: 'Deploy to Staging'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - deployment: DeployToStaging
+        displayName: 'Deploy to Staging Environment'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'staging'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: '$(nodeVersion)'
+
+                - task: UsePythonVersion@0
+                  inputs:
+                    versionSpec: '$(pythonVersion)'
+
+                # Install PM2
+                - script: |
+                    npm install -g pm2
+                  displayName: 'Install PM2'
+
+                # Deploy using PM2
+                - task: SSH@0
+                  inputs:
+                    sshEndpoint: 'staging-server'
+                    runOptions: 'commands'
+                    commands: |
+                      cd /var/www/aiindex
+                      git pull origin develop
+                      pm2 reload $(pm2Config) --env staging
+                      pm2 save
+                  displayName: 'Deploy to Staging with PM2'
+
+                # Run smoke tests
+                - script: |
+                    ./scripts/smoke-tests.sh staging
+                  displayName: 'Run Staging Smoke Tests'
+
+  # ============================================================================
+  # DEPLOY TO PRODUCTION
+  # ============================================================================
+  - stage: DeployProduction
+    displayName: 'Deploy to Production'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployToProduction
+        displayName: 'Deploy to Production Environment'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: '$(nodeVersion)'
+
+                - task: UsePythonVersion@0
+                  inputs:
+                    versionSpec: '$(pythonVersion)'
+
+                # Install PM2
+                - script: |
+                    npm install -g pm2
+                  displayName: 'Install PM2'
+
+                # Deploy using PM2
+                - task: SSH@0
+                  inputs:
+                    sshEndpoint: 'production-server'
+                    runOptions: 'commands'
+                    commands: |
+                      cd /var/www/aiindex
+                      git pull origin main
+                      pm2 reload $(pm2Config) --env production
+                      pm2 save
+                  displayName: 'Deploy to Production with PM2'
+
+                # Run smoke tests
+                - script: |
+                    ./scripts/smoke-tests.sh production
+                  displayName: 'Run Production Smoke Tests'
+
+  # ============================================================================
+  # E2E TESTING STAGE (Optional, runs nightly)
+  # ============================================================================
+  - stage: E2ETests
+    displayName: 'E2E Tests'
+    dependsOn: []
+    condition: eq(variables['Build.Reason'], 'Schedule')
+    jobs:
+      - job: RunE2ETests
+        displayName: 'Run E2E Test Suite'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+
+          - script: |
+              pip install -r tests/requirements.txt
+              pytest tests/e2e/ -v --junitxml=e2e-results.xml
+            displayName: 'Run E2E Tests'
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFiles: '**/e2e-results.xml'
+              testRunTitle: 'E2E Tests'
+            condition: always()

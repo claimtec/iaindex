@@ -1,0 +1,40 @@
+{
+  "name": "@aiindex/webflow-snippet",
+  "version": "1.0.0",
+  "description": "AIIndex integration snippet for Webflow - Auto-generate AI Index JSON from Webflow CMS",
+  "main": "snippet.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "echo \"Tests coming soon\"",
+    "serve": "python -m http.server 8080"
+  },
+  "keywords": [
+    "aiindex",
+    "webflow",
+    "cms",
+    "ai",
+    "index",
+    "integration",
+    "snippet"
+  ],
+  "author": "AIIndex",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiindex/webflow-integration"
+  },
+  "bugs": {
+    "url": "https://github.com/aiindex/webflow-integration/issues"
+  },
+  "homepage": "https://docs.aiindex.org/webflow",
+  "files": [
+    "snippet.js",
+    "config.html",
+    "styles.css",
+    "README.md"
+  ],
+  "cdn": {
+    "jsdelivr": "https://cdn.jsdelivr.net/npm/@aiindex/webflow-snippet@1.0.0/snippet.js",
+    "unpkg": "https://unpkg.com/@aiindex/webflow-snippet@1.0.0/snippet.js"
+  }
+}

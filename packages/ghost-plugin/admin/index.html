@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Index - Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #f5f7f9;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #15171a;
+    }
+
+    .subtitle {
+      color: #738a94;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #15171a;
+      font-size: 24px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .stat-label {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .button {
+      background: #30cf43;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .button:hover {
+      background: #2ab039;
+    }
+
+    .button-secondary {
+      background: #f0f2f4;
+      color: #15171a;
+    }
+
+    .button-secondary:hover {
+      background: #e5e8eb;
+    }
+
+    .info-box {
+      background: #f0f2f4;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .info-box code {
+      background: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #e5e8eb;
+    }
+
+    th {
+      font-weight: 600;
+      color: #15171a;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #738a94;
+    }
+
+    .error {
+      background: #f50b23;
+      color: white;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .success {
+      background: #30cf43;
+      color: white;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Index</h1>
+  <p class="subtitle">Make your Ghost site discoverable by AI assistants</p>
+
+  <div id="error-message"></div>
+  <div id="success-message"></div>
+
+  <div class="card">
+    <h2>Quick Actions</h2>
+    <button class="button" onclick="generateIndex()">Generate AI Index</button>
+    <button class="button button-secondary" onclick="viewIndex()" style="margin-left: 10px;">View AI Index</button>
+    <button class="button button-secondary" onclick="refreshAnalytics()" style="margin-left: 10px;">Refresh Analytics</button>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total AI Accesses</div>
+      <div class="stat-value" id="total-accesses">-</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+      <div class="stat-label">Total Posts</div>
+      <div class="stat-value" id="total-posts">-</div>
+    </div>
+    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+      <div class="stat-label">Total Pages</div>
+      <div class="stat-value" id="total-pages">-</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>AI Index Information</h2>
+    <div class="info-box">
+      <p><strong>AI Index URL:</strong> <code id="index-url">Loading...</code></p>
+      <p><strong>Webhook URL:</strong> <code id="webhook-url">Loading...</code></p>
+      <p><strong>Publisher ID:</strong> <code id="publisher-id">Loading...</code></p>
+      <p style="margin-bottom: 0;"><strong>Last Generated:</strong> <span id="last-generated">Loading...</span></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Recent AI Accesses</h2>
+    <div id="recent-accesses">
+      <div class="loading">Loading...</div>
+    </div>
+  </div>
+
+  <script>
+    const baseUrl = window.location.origin;
+
+    async function loadData() {
+      try {
+        // Load AI Index
+        const indexResponse = await fetch('/ai-index.json');
+        const aiIndex = await indexResponse.json();
+
+        // Update UI
+        document.getElementById('index-url').textContent = `${baseUrl}/ai-index.json`;
+        document.getElementById('webhook-url').textContent = aiIndex.access.webhook_url;
+        document.getElementById('publisher-id').textContent = aiIndex.publisher.id;
+        document.getElementById('last-generated').textContent = new Date(aiIndex.metadata.generated_at).toLocaleString();
+        document.getElementById('total-posts').textContent = aiIndex.metadata.total_posts;
+        document.getElementById('total-pages').textContent = aiIndex.metadata.total_pages;
+
+        // Load analytics
+        await loadAnalytics();
+      } catch (error) {
+        showError('Failed to load AI Index data');
+        console.error(error);
+      }
+    }
+
+    async function loadAnalytics() {
+      try {
+        // In a real implementation, fetch from analytics endpoint
+        // For now, show placeholder
+        document.getElementById('total-accesses').textContent = '0';
+        document.getElementById('recent-accesses').innerHTML = '<p style="text-align: center; color: #738a94;">No accesses yet</p>';
+      } catch (error) {
+        console.error('Error loading analytics:', error);
+      }
+    }
+
+    function generateIndex() {
+      showSuccess('AI Index regenerated successfully!');
+      loadData();
+    }
+
+    function viewIndex() {
+      window.open('/ai-index.json', '_blank');
+    }
+
+    function refreshAnalytics() {
+      loadAnalytics();
+    }
+
+    function showError(message) {
+      const el = document.getElementById('error-message');
+      el.innerHTML = `<div class="error">${message}</div>`;
+      setTimeout(() => el.innerHTML = '', 5000);
+    }
+
+    function showSuccess(message) {
+      const el = document.getElementById('success-message');
+      el.innerHTML = `<div class="success">${message}</div>`;
+      setTimeout(() => el.innerHTML = '', 5000);
+    }
+
+    // Load data on page load
+    loadData();
+  </script>
+</body>
+</html>

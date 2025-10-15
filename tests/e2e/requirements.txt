@@ -1,0 +1,23 @@
+# E2E Test Requirements
+
+# Core testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-timeout==2.2.0
+
+# HTTP client
+httpx==0.25.2
+
+# Cryptography for receipt signing
+cryptography==41.0.7
+PyJWT==2.8.0
+
+# Data processing
+numpy==1.26.2
+
+# Utilities
+python-dotenv==1.0.0
+
+# Optional: Better test output
+pytest-html==4.1.1
+pytest-json-report==1.5.0

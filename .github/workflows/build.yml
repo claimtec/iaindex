@@ -1,0 +1,209 @@
+name: Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build-api:
+    name: Build API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./packages/api
+
+      - name: Build
+        run: npm run build
+        working-directory: ./packages/api
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-build
+          path: ./packages/api/dist
+          retention-days: 7
+
+  build-web:
+    name: Build Web Dashboard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./apps/web
+
+      - name: Build
+        run: npm run build
+        working-directory: ./apps/web
+        env:
+          NEXT_PUBLIC_API_URL: ${{ github.ref == 'refs/heads/main' && 'https://api.iaindex.dev' || 'https://api-staging.iaindex.dev' }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: ./apps/web/.next
+          retention-days: 7
+
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./apps/docs
+
+      - name: Build
+        run: npm run build
+        working-directory: ./apps/docs
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-build
+          path: ./apps/docs/build
+          retention-days: 7
+
+  build-docker-api:
+    name: Build Docker Image (API)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: iaindex/api
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./packages/api/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-sdks:
+    name: Build SDKs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build JavaScript SDK
+        run: |
+          npm ci
+          npm run build
+        working-directory: ./packages/sdk-js
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Build Python SDK
+        run: |
+          pip install build
+          python -m build
+        working-directory: ./packages/sdk-python
+
+      - name: Upload JS SDK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdk-js-build
+          path: ./packages/sdk-js/dist
+          retention-days: 7
+
+      - name: Upload Python SDK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdk-python-build
+          path: ./packages/sdk-python/dist
+          retention-days: 7
+
+  check-versions:
+    name: Check Version Consistency
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check package versions
+        run: |
+          echo "Checking version consistency across packages..."
+
+          # Extract versions
+          API_VERSION=$(node -p "require('./packages/api/package.json').version")
+          WEB_VERSION=$(node -p "require('./apps/web/package.json').version")
+          SDK_JS_VERSION=$(node -p "require('./packages/sdk-js/package.json').version")
+
+          echo "API Version: $API_VERSION"
+          echo "Web Version: $WEB_VERSION"
+          echo "SDK JS Version: $SDK_JS_VERSION"
+
+          # Versions should be consistent for major releases
+          if [[ "$API_VERSION" != "$SDK_JS_VERSION" ]]; then
+            echo "Warning: API and SDK versions differ"
+          fi

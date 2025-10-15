@@ -1,0 +1,28 @@
+{
+  "name": "@iaindex/wix-plugin",
+  "version": "1.0.0",
+  "description": "AI Index integration for Wix websites - automatically publish your site content to AI search engines",
+  "main": "backend/aiindex.jsw",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wix",
+    "ai-index",
+    "seo",
+    "ai-search",
+    "velo",
+    "wix-dashboard"
+  ],
+  "author": "ClaimTec",
+  "license": "MIT",
+  "dependencies": {
+    "wix-fetch": "^1.0.0",
+    "wix-data": "^1.0.0",
+    "wix-secrets-backend": "^1.0.0"
+  },
+  "wix": {
+    "version": "1.0.0",
+    "type": "plugin"
+  }
+}

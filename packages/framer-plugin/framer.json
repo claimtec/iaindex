@@ -1,0 +1,28 @@
+{
+  "name": "AI Index",
+  "id": "ai-index-plugin",
+  "version": "1.0.0",
+  "description": "Automatically generate and inject AI Index JSON for AI assistant discovery",
+  "author": "AI Index",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/ai-index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-index"
+  },
+  "categories": ["utilities", "seo"],
+  "components": [
+    {
+      "name": "AIIndex",
+      "displayName": "AI Index",
+      "description": "Generates /ai-index.json for AI assistant discovery",
+      "category": "utilities",
+      "icon": "🤖"
+    }
+  ],
+  "dependencies": {
+    "framer": "^2.0.0",
+    "react": "^18.0.0"
+  }
+}

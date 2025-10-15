@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Index Configuration</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 6px;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .checkbox-group {
+            background: #f7fafc;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button-secondary {
+            background: #48bb78;
+        }
+
+        .button-secondary:hover {
+            background: #38a169;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+
+        .alert-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #f56565;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .verification-badge svg {
+            margin-right: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .help-text {
+            background: #f7fafc;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #4a5568;
+        }
+
+        .help-text strong {
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Index Configuration</h1>
+            <p>Configure your Squarespace site for AI search engines</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <!-- Status Overview -->
+        <div class="card">
+            <h2>Status Overview</h2>
+            <div class="status-grid">
+                <div class="stat">
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value" id="indexStatus">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Pages</div>
+                    <div class="stat-value" id="pageCount">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Last Update</div>
+                    <div class="stat-value" id="lastUpdated" style="font-size: 14px;">Never</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Form -->
+        <div class="card">
+            <h2>API Configuration</h2>
+
+            <div class="form-group">
+                <label for="apiKey">AI Index API Key *</label>
+                <input type="password" id="apiKey" placeholder="Enter your API key">
+                <small>Get your API key from <a href="https://aiindex.com" target="_blank" style="color: #667eea;">aiindex.com</a></small>
+            </div>
+
+            <div class="form-group">
+                <label for="webhookUrl">Webhook URL (Optional)</label>
+                <input type="text" id="webhookUrl" placeholder="https://yoursite.com/webhook">
+                <small>Receive notifications when your AI Index is updated</small>
+            </div>
+
+            <div class="button-group">
+                <button class="button" id="saveConfig">Save Configuration</button>
+                <button class="button button-secondary" id="verifyKey">Verify API Key</button>
+            </div>
+        </div>
+
+        <!-- Content Options -->
+        <div class="card">
+            <h2>Content Options</h2>
+
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="autoPublish" checked>
+                    <label for="autoPublish">Auto-publish on changes (daily)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="includePages" checked>
+                    <label for="includePages">Include static pages</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="includeBlog" checked>
+                    <label for="includeBlog">Include blog posts</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="includeProducts">
+                    <label for="includeProducts">Include store products</label>
+                </div>
+            </div>
+
+            <button class="button" id="saveOptions">Save Options</button>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+            <h2>Actions</h2>
+
+            <div class="button-group">
+                <button class="button button-secondary" id="generateNow">Generate Index</button>
+                <button class="button button-secondary" id="publishNow">Publish to API</button>
+            </div>
+
+            <div class="help-text">
+                <strong>Generate Index:</strong> Creates the AI Index from your site content<br>
+                <strong>Publish to API:</strong> Sends the generated index to AI search engines
+            </div>
+        </div>
+
+        <!-- Verification Badge -->
+        <div class="card">
+            <h2>Verification Badge</h2>
+            <p style="margin-bottom: 16px; color: #4a5568;">Add this HTML snippet anywhere on your site to show the verification badge:</p>
+
+            <div class="code-block" id="badgeCode">
+&lt;div class="ai-index-badge"&gt;
+  &lt;svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"&gt;
+    &lt;path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-2 15l-5-5 1.41-1.41L8 12.17l7.59-7.59L17 6l-9 9z"/&gt;
+  &lt;/svg&gt;
+  &lt;span&gt;AI Index Verified&lt;/span&gt;
+&lt;/div&gt;
+            </div>
+
+            <div class="help-text">
+                Add the <code>styles.css</code> file to your Custom CSS for proper styling.
+            </div>
+        </div>
+
+        <!-- AI Index URL -->
+        <div class="card">
+            <h2>Your AI Index URL</h2>
+            <p style="margin-bottom: 16px; color: #4a5568;">This URL will serve your AI Index JSON:</p>
+
+            <div class="code-block">
+                <span id="aiIndexUrl">https://yoursite.com/ai-index.json</span>
+            </div>
+
+            <div class="help-text">
+                <strong>Note:</strong> Squarespace doesn't support custom API endpoints, so the AI Index is served via JavaScript and localStorage. For best results, ensure the main script is loaded in your header.
+            </div>
+        </div>
+    </div>
+
+    <script src="aiindex-squarespace.js"></script>
+    <script>
+        // Show alert
+        function showAlert(message, type = 'info') {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} show`;
+            alert.textContent = message;
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+
+        // Load configuration
+        function loadConfig() {
+            const config = window.AIIndex.getConfig();
+
+            document.getElementById('apiKey').value = config.apiKey || '';
+            document.getElementById('webhookUrl').value = config.webhookUrl || '';
+            document.getElementById('autoPublish').checked = config.autoPublish;
+            document.getElementById('includePages').checked = config.includePages;
+            document.getElementById('includeBlog').checked = config.includeBlog;
+            document.getElementById('includeProducts').checked = config.includeProducts;
+
+            // Load status
+            const data = window.AIIndex.getData();
+            if (data) {
+                document.getElementById('indexStatus').textContent = 'Active';
+                document.getElementById('pageCount').textContent = data.pages.length;
+                const lastGen = localStorage.getItem('aiindex_last_generated');
+                if (lastGen) {
+                    document.getElementById('lastUpdated').textContent = new Date(lastGen).toLocaleDateString();
+                }
+            } else {
+                document.getElementById('indexStatus').textContent = 'Not Generated';
+            }
+
+            // Set URLs
+            document.getElementById('aiIndexUrl').textContent = window.location.origin + '/ai-index.json';
+        }
+
+        // Save configuration
+        document.getElementById('saveConfig').addEventListener('click', () => {
+            const apiKey = document.getElementById('apiKey').value;
+            const webhookUrl = document.getElementById('webhookUrl').value;
+
+            if (!apiKey) {
+                showAlert('Please enter an API key', 'error');
+                return;
+            }
+
+            window.AIIndex.setConfig({
+                apiKey: apiKey,
+                webhookUrl: webhookUrl
+            });
+
+            showAlert('Configuration saved successfully!', 'success');
+        });
+
+        // Save options
+        document.getElementById('saveOptions').addEventListener('click', () => {
+            window.AIIndex.setConfig({
+                autoPublish: document.getElementById('autoPublish').checked,
+                includePages: document.getElementById('includePages').checked,
+                includeBlog: document.getElementById('includeBlog').checked,
+                includeProducts: document.getElementById('includeProducts').checked
+            });
+
+            showAlert('Options saved successfully!', 'success');
+        });
+
+        // Verify API key
+        document.getElementById('verifyKey').addEventListener('click', async () => {
+            const apiKey = document.getElementById('apiKey').value;
+
+            if (!apiKey) {
+                showAlert('Please enter an API key', 'error');
+                return;
+            }
+
+            const button = document.getElementById('verifyKey');
+            button.disabled = true;
+            button.innerHTML = 'Verifying... <span class="loading"></span>';
+
+            try {
+                const result = await window.AIIndex.verifyApiKey(apiKey);
+                if (result.valid) {
+                    showAlert('API key is valid!', 'success');
+                } else {
+                    showAlert('API key is invalid', 'error');
+                }
+            } catch (error) {
+                showAlert('Error verifying API key: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Verify API Key';
+            }
+        });
+
+        // Generate index
+        document.getElementById('generateNow').addEventListener('click', async () => {
+            const button = document.getElementById('generateNow');
+            button.disabled = true;
+            button.innerHTML = 'Generating... <span class="loading"></span>';
+
+            try {
+                const data = await window.AIIndex.generate();
+                showAlert(`Successfully generated AI Index with ${data.pages.length} pages!`, 'success');
+                loadConfig();
+            } catch (error) {
+                showAlert('Error generating index: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Generate Index';
+            }
+        });
+
+        // Publish index
+        document.getElementById('publishNow').addEventListener('click', async () => {
+            const button = document.getElementById('publishNow');
+            button.disabled = true;
+            button.innerHTML = 'Publishing... <span class="loading"></span>';
+
+            try {
+                await window.AIIndex.publish();
+                showAlert('Successfully published to AI Index API!', 'success');
+            } catch (error) {
+                showAlert('Error publishing: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Publish to API';
+            }
+        });
+
+        // Initialize
+        loadConfig();
+    </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+name: Test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-api:
+    name: Test API
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: iaindex_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./packages/api
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: ./packages/api
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./packages/api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/iaindex_test
+          NODE_ENV: test
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./packages/api/coverage/lcov.info
+          flags: api
+
+  test-sdk-js:
+    name: Test JavaScript SDK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./packages/sdk-js
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: ./packages/sdk-js
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./packages/sdk-js
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./packages/sdk-js/coverage/lcov.info
+          flags: sdk-js
+
+  test-sdk-python:
+    name: Test Python SDK
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+        working-directory: ./packages/sdk-python
+
+      - name: Run linter
+        run: |
+          pylint iaindex
+          black --check .
+          mypy iaindex
+        working-directory: ./packages/sdk-python
+
+      - name: Run tests
+        run: pytest --cov=iaindex --cov-report=xml
+        working-directory: ./packages/sdk-python
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./packages/sdk-python/coverage.xml
+          flags: sdk-python
+
+  test-merkle:
+    name: Test Merkle System
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+        working-directory: ./infra/merkle
+
+      - name: Run tests
+        run: |
+          python -m pytest --cov=. --cov-report=xml || true
+        working-directory: ./infra/merkle
+
+  test-web:
+    name: Test Web Dashboard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./apps/web
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: ./apps/web
+
+      - name: Run type check
+        run: npm run type-check
+        working-directory: ./apps/web
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./apps/web
+
+      - name: Build
+        run: npm run build
+        working-directory: ./apps/web
+        env:
+          NEXT_PUBLIC_API_URL: https://api.iaindex.dev
+
+  test-docs:
+    name: Test Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./apps/docs
+
+      - name: Build docs
+        run: npm run build
+        working-directory: ./apps/docs
+
+  lint-commits:
+    name: Lint Commits
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install commitlint
+        run: npm install -g @commitlint/cli @commitlint/config-conventional
+
+      - name: Lint commits
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}

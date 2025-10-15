@@ -1,0 +1,58 @@
+{
+  "name": "AI Index Integration",
+  "description": "Automatically publish your Wix site content to AI search engines like ChatGPT, Perplexity, and Claude",
+  "version": "1.0.0",
+  "permissions": [
+    "read-site-structure",
+    "read-site-pages",
+    "read-blog-posts",
+    "read-products",
+    "http-functions",
+    "secrets-backend"
+  ],
+  "settings": {
+    "apiKey": {
+      "type": "string",
+      "label": "AI Index API Key",
+      "required": true,
+      "secret": true
+    },
+    "webhookUrl": {
+      "type": "string",
+      "label": "Webhook URL",
+      "required": false
+    },
+    "autoPublish": {
+      "type": "boolean",
+      "label": "Auto-publish on content changes",
+      "default": true
+    },
+    "includePages": {
+      "type": "boolean",
+      "label": "Include static pages",
+      "default": true
+    },
+    "includeBlog": {
+      "type": "boolean",
+      "label": "Include blog posts",
+      "default": true
+    },
+    "includeProducts": {
+      "type": "boolean",
+      "label": "Include store products",
+      "default": false
+    }
+  },
+  "dashboard": {
+    "panel": "dashboard/panel.html",
+    "icon": "dashboard/icon.svg"
+  },
+  "backend": {
+    "httpFunctions": [
+      {
+        "functionName": "get_aiindex",
+        "path": "/ai-index.json"
+      }
+    ]
+  }
+}

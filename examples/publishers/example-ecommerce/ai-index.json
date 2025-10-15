@@ -1,0 +1,241 @@
+{
+  "version": "1.0",
+  "publisher_id": "techgear-shop.com",
+  "domain": "techgear-shop.com",
+  "last_updated": "2025-10-13T10:00:00Z",
+  "publisher": {
+    "name": "TechGear Shop",
+    "description": "Premium technology accessories and gadgets for developers and tech enthusiasts",
+    "url": "https://techgear-shop.com",
+    "contact": {
+      "email": "support@techgear-shop.com",
+      "url": "https://techgear-shop.com/pages/contact"
+    },
+    "logo": "https://techgear-shop.com/cdn/logo.png"
+  },
+  "entities": [
+    {
+      "type": "Organization",
+      "name": "TechGear Inc.",
+      "description": "E-commerce retailer specializing in technology products",
+      "url": "https://techgear-shop.com/pages/about"
+    },
+    {
+      "type": "Product",
+      "name": "Mechanical Keyboard Pro",
+      "description": "RGB mechanical keyboard designed for developers",
+      "url": "https://techgear-shop.com/products/mechanical-keyboard-pro",
+      "image": "https://techgear-shop.com/cdn/products/keyboard-pro.jpg",
+      "properties": {
+        "price": "149.99",
+        "currency": "USD",
+        "brand": "TechGear",
+        "category": "Keyboards",
+        "inStock": true
+      }
+    },
+    {
+      "type": "Product",
+      "name": "Wireless Mouse Elite",
+      "description": "Ergonomic wireless mouse with precision tracking",
+      "url": "https://techgear-shop.com/products/wireless-mouse-elite",
+      "image": "https://techgear-shop.com/cdn/products/mouse-elite.jpg",
+      "properties": {
+        "price": "79.99",
+        "currency": "USD",
+        "brand": "TechGear",
+        "category": "Mice",
+        "inStock": true
+      }
+    },
+    {
+      "type": "Product",
+      "name": "USB-C Hub Pro",
+      "description": "7-in-1 USB-C hub with 4K HDMI and fast charging",
+      "url": "https://techgear-shop.com/products/usb-c-hub-pro",
+      "image": "https://techgear-shop.com/cdn/products/usb-hub.jpg",
+      "properties": {
+        "price": "59.99",
+        "currency": "USD",
+        "brand": "TechGear",
+        "category": "Adapters",
+        "inStock": true
+      }
+    },
+    {
+      "type": "Product",
+      "name": "Laptop Stand Aluminum",
+      "description": "Adjustable aluminum laptop stand with cooling design",
+      "url": "https://techgear-shop.com/products/laptop-stand-aluminum",
+      "image": "https://techgear-shop.com/cdn/products/laptop-stand.jpg",
+      "properties": {
+        "price": "49.99",
+        "currency": "USD",
+        "brand": "TechGear",
+        "category": "Stands",
+        "inStock": true
+      }
+    },
+    {
+      "type": "Product",
+      "name": "Webcam 4K Pro",
+      "description": "4K webcam with auto-focus and noise cancellation",
+      "url": "https://techgear-shop.com/products/webcam-4k-pro",
+      "image": "https://techgear-shop.com/cdn/products/webcam.jpg",
+      "properties": {
+        "price": "129.99",
+        "currency": "USD",
+        "brand": "TechGear",
+        "category": "Webcams",
+        "inStock": true
+      }
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://techgear-shop.com/products/mechanical-keyboard-pro",
+      "title": "Mechanical Keyboard Pro - RGB Gaming & Coding Keyboard",
+      "description": "Professional RGB mechanical keyboard with Cherry MX switches, perfect for coding and gaming",
+      "content_type": "product",
+      "published": "2025-09-15T10:00:00Z",
+      "modified": "2025-10-10T15:30:00Z",
+      "tags": ["Keyboard", "Mechanical", "RGB", "Gaming", "Coding"],
+      "summary": "Premium mechanical keyboard featuring Cherry MX Blue switches, per-key RGB lighting, aluminum frame, and programmable keys. Designed for developers and gamers with N-key rollover and USB-C connectivity. Price: $149.99"
+    },
+    {
+      "url": "https://techgear-shop.com/products/wireless-mouse-elite",
+      "title": "Wireless Mouse Elite - Ergonomic Precision Mouse",
+      "description": "High-precision wireless mouse with ergonomic design and long battery life",
+      "content_type": "product",
+      "published": "2025-09-10T10:00:00Z",
+      "modified": "2025-10-08T12:00:00Z",
+      "tags": ["Mouse", "Wireless", "Ergonomic", "Precision"],
+      "summary": "Ergonomic wireless mouse with 16000 DPI sensor, customizable buttons, and 70-hour battery life. Features silent clicking and works with both Bluetooth and USB receiver. Price: $79.99"
+    },
+    {
+      "url": "https://techgear-shop.com/products/usb-c-hub-pro",
+      "title": "USB-C Hub Pro - 7-in-1 Multiport Adapter",
+      "description": "Versatile USB-C hub with 4K HDMI, USB 3.0, SD card reader, and 100W power delivery",
+      "content_type": "product",
+      "published": "2025-09-05T10:00:00Z",
+      "modified": "2025-10-05T11:00:00Z",
+      "tags": ["USB-C", "Hub", "Adapter", "HDMI", "Multiport"],
+      "summary": "7-in-1 USB-C hub featuring 4K HDMI output, 3x USB 3.0 ports, SD/microSD card readers, and 100W PD charging. Aluminum construction with plug-and-play setup. Compatible with MacBook, iPad, and laptops. Price: $59.99"
+    },
+    {
+      "url": "https://techgear-shop.com/products/laptop-stand-aluminum",
+      "title": "Laptop Stand Aluminum - Adjustable Ergonomic Stand",
+      "description": "Premium aluminum laptop stand with adjustable height and angle",
+      "content_type": "product",
+      "published": "2025-09-01T10:00:00Z",
+      "modified": "2025-09-01T10:00:00Z",
+      "tags": ["Laptop Stand", "Aluminum", "Ergonomic", "Adjustable"],
+      "summary": "Adjustable laptop stand made from premium aluminum with heat-dissipating design. Supports laptops 10-17 inches with multiple viewing angles. Includes cable management and non-slip pads. Price: $49.99"
+    },
+    {
+      "url": "https://techgear-shop.com/products/webcam-4k-pro",
+      "title": "Webcam 4K Pro - Ultra HD Streaming Camera",
+      "description": "4K webcam with auto-focus, noise cancellation, and wide-angle lens",
+      "content_type": "product",
+      "published": "2025-08-25T10:00:00Z",
+      "modified": "2025-10-12T14:00:00Z",
+      "tags": ["Webcam", "4K", "Streaming", "Video Conferencing"],
+      "summary": "Professional 4K webcam with Sony sensor, auto-focus, dual microphones with noise cancellation, and 90-degree wide-angle lens. Ideal for streaming, video conferencing, and content creation. USB plug-and-play. Price: $129.99"
+    },
+    {
+      "url": "https://techgear-shop.com/collections/keyboards",
+      "title": "Keyboards Collection - Mechanical & Wireless Keyboards",
+      "description": "Browse our selection of mechanical and wireless keyboards for developers and gamers",
+      "content_type": "page",
+      "published": "2025-08-01T10:00:00Z",
+      "modified": "2025-10-13T09:00:00Z",
+      "tags": ["Collection", "Keyboards"],
+      "summary": "Collection of premium keyboards including mechanical keyboards with various switch types, wireless options, and ergonomic designs. Featured products: Mechanical Keyboard Pro, Compact Wireless Keyboard, Ergonomic Split Keyboard."
+    },
+    {
+      "url": "https://techgear-shop.com/collections/accessories",
+      "title": "Tech Accessories Collection - USB Hubs, Stands & More",
+      "description": "Essential tech accessories for your workspace",
+      "content_type": "page",
+      "published": "2025-08-01T10:00:00Z",
+      "modified": "2025-10-11T16:00:00Z",
+      "tags": ["Collection", "Accessories"],
+      "summary": "Wide range of tech accessories including USB-C hubs, laptop stands, cable organizers, and desk accessories. Products designed to enhance productivity and workspace organization."
+    },
+    {
+      "url": "https://techgear-shop.com/pages/about",
+      "title": "About TechGear Shop - Quality Tech Products Since 2020",
+      "description": "Learn about our mission to provide quality tech products for developers",
+      "content_type": "about",
+      "published": "2025-08-01T00:00:00Z",
+      "modified": "2025-09-15T00:00:00Z",
+      "tags": ["About"],
+      "summary": "TechGear Shop was founded in 2020 to provide developers and tech professionals with high-quality accessories and gadgets. We curate and design products that enhance productivity and comfort in digital workspaces."
+    },
+    {
+      "url": "https://techgear-shop.com/pages/shipping-returns",
+      "title": "Shipping & Returns Policy - Free Shipping on Orders Over $50",
+      "description": "Learn about our shipping options and hassle-free return policy",
+      "content_type": "page",
+      "published": "2025-08-01T00:00:00Z",
+      "modified": "2025-09-01T00:00:00Z",
+      "tags": ["Shipping", "Returns", "Policy"],
+      "summary": "Free shipping on orders over $50. 30-day return policy for unopened items. Express shipping available. International shipping to 50+ countries."
+    },
+    {
+      "url": "https://techgear-shop.com/pages/contact",
+      "title": "Contact Us - Customer Support",
+      "description": "Get in touch with our customer support team",
+      "content_type": "page",
+      "published": "2025-08-01T00:00:00Z",
+      "modified": "2025-08-01T00:00:00Z",
+      "tags": ["Contact", "Support"],
+      "summary": "Contact TechGear Shop customer support via email at support@techgear-shop.com or live chat. Available Monday-Friday 9am-5pm EST. Average response time: 2 hours."
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is your return policy?",
+      "answer": "We offer a 30-day return policy for unopened items in original packaging. Returns are free for defective items, otherwise a $5.99 restocking fee applies.",
+      "category": "Returns"
+    },
+    {
+      "question": "Do you offer international shipping?",
+      "answer": "Yes, we ship to over 50 countries worldwide. International shipping costs vary by destination and are calculated at checkout.",
+      "category": "Shipping"
+    },
+    {
+      "question": "Are your products covered by warranty?",
+      "answer": "All TechGear brand products include a 1-year manufacturer warranty. Third-party products have warranties as specified by their manufacturers.",
+      "category": "Warranty"
+    },
+    {
+      "question": "Can AI systems use our product information?",
+      "answer": "Yes, AI systems can access our product catalog through the AIIndex protocol. We require access receipts and proper attribution when our product data is used in AI responses or recommendations.",
+      "category": "AI Access"
+    }
+  ],
+  "access_policy": {
+    "allowed": true,
+    "attribution_required": true,
+    "commercial_use": true,
+    "receipt_required": true,
+    "webhook_url": "https://techgear-shop.com/api/aiindex/receipts"
+  },
+  "verification": {
+    "verified": true,
+    "verified_at": "2025-10-02T00:00:00Z",
+    "verification_url": "https://aiindex.org/publishers/techgear-shop.com"
+  },
+  "metadata": {
+    "platform": "Shopify",
+    "app_version": "aiindex-shopify-1.0.0",
+    "language": "en",
+    "currency": "USD",
+    "product_count": 150,
+    "categories": ["Keyboards", "Mice", "Adapters", "Stands", "Webcams", "Cables", "Storage"],
+    "update_frequency": "daily",
+    "api_available": true,
+    "api_docs_url": "https://techgear-shop.com/pages/api-docs"
+  }
+}

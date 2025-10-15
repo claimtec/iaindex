@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIIndex Verification Badge - Example Implementation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .badge-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .aiindex-badge {
+            display: inline-block;
+            transition: opacity 0.2s;
+        }
+
+        .aiindex-badge:hover {
+            opacity: 0.8;
+        }
+
+        .aiindex-badge img {
+            display: block;
+        }
+
+        .badge-large {
+            width: 180px;
+            height: 60px;
+        }
+
+        .badge-medium {
+            width: 120px;
+            height: 40px;
+        }
+
+        .badge-small {
+            width: 90px;
+            height: 30px;
+        }
+
+        code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AIIndex Verification Badge</h1>
+    <p>Display your AIIndex verification status to visitors and AI agents.</p>
+
+    <h2>Large Badge (180x60)</h2>
+    <div class="badge-container">
+        <a href="https://aiindex.org/publishers/example-blog.com"
+           class="aiindex-badge"
+           target="_blank"
+           rel="noopener">
+            <svg class="badge-large" viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="180" height="60" rx="5" fill="url(#grad1)"/>
+                <circle cx="25" cy="30" r="8" fill="white"/>
+                <path d="M25 25 L25 35 M20 30 L30 30" stroke="#4F46E5" stroke-width="2" stroke-linecap="round"/>
+                <text x="45" y="25" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">AIIndex</text>
+                <text x="45" y="40" font-family="Arial, sans-serif" font-size="10" fill="white" opacity="0.9">Verified Publisher</text>
+            </svg>
+        </a>
+    </div>
+    <pre><code>&lt;a href="https://aiindex.org/publishers/example-blog.com"
+   target="_blank"
+   rel="noopener"&gt;
+  &lt;img src="https://aiindex.org/badge-large.svg"
+       alt="AIIndex Verified Publisher"
+       width="180"
+       height="60"&gt;
+&lt;/a&gt;</code></pre>
+
+    <h2>Medium Badge (120x40)</h2>
+    <div class="badge-container">
+        <a href="https://aiindex.org/publishers/example-blog.com"
+           class="aiindex-badge"
+           target="_blank"
+           rel="noopener">
+            <svg class="badge-medium" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="120" height="40" rx="4" fill="url(#grad2)"/>
+                <circle cx="18" cy="20" r="6" fill="white"/>
+                <path d="M18 16 L18 24 M14 20 L22 20" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="30" y="18" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">AIIndex</text>
+                <text x="30" y="28" font-family="Arial, sans-serif" font-size="7" fill="white" opacity="0.9">Verified</text>
+            </svg>
+        </a>
+    </div>
+    <pre><code>&lt;a href="https://aiindex.org/publishers/example-blog.com"
+   target="_blank"
+   rel="noopener"&gt;
+  &lt;img src="https://aiindex.org/badge.svg"
+       alt="AIIndex Verified"
+       width="120"
+       height="40"&gt;
+&lt;/a&gt;</code></pre>
+
+    <h2>Small Badge (90x30)</h2>
+    <div class="badge-container">
+        <a href="https://aiindex.org/publishers/example-blog.com"
+           class="aiindex-badge"
+           target="_blank"
+           rel="noopener">
+            <svg class="badge-small" viewBox="0 0 90 30" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="90" height="30" rx="3" fill="url(#grad3)"/>
+                <circle cx="15" cy="15" r="5" fill="white"/>
+                <path d="M15 12 L15 18 M12 15 L18 15" stroke="#4F46E5" stroke-width="1.2" stroke-linecap="round"/>
+                <text x="25" y="18" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Verified</text>
+            </svg>
+        </a>
+    </div>
+    <pre><code>&lt;a href="https://aiindex.org/publishers/example-blog.com"
+   target="_blank"
+   rel="noopener"&gt;
+  &lt;img src="https://aiindex.org/badge-small.svg"
+       alt="AIIndex Verified"
+       width="90"
+       height="30"&gt;
+&lt;/a&gt;</code></pre>
+
+    <h2>WordPress Implementation</h2>
+    <pre><code>// Add to footer.php
+&lt;?php if (function_exists('aiindex_verified_badge')): ?&gt;
+    &lt;div class="footer-badge"&gt;
+        &lt;?php aiindex_verified_badge(); ?&gt;
+    &lt;/div&gt;
+&lt;?php endif; ?&gt;
+
+// Or use shortcode
+[aiindex_badge size="medium"]</code></pre>
+
+    <h2>Styling Tips</h2>
+    <pre><code>.aiindex-badge {
+    display: inline-block;
+    margin: 10px 0;
+    transition: transform 0.2s;
+}
+
+.aiindex-badge:hover {
+    transform: scale(1.05);
+}
+
+/* Footer placement */
+.site-footer .aiindex-badge {
+    margin-top: 20px;
+}
+
+/* Sidebar widget */
+.widget-aiindex .aiindex-badge {
+    text-align: center;
+    display: block;
+}</code></pre>
+
+    <h2>Verification Status</h2>
+    <p>When clicked, the badge links to your publisher profile at:</p>
+    <code>https://aiindex.org/publishers/example-blog.com</code>
+
+    <p>This page displays:</p>
+    <ul>
+        <li>Verification status and date</li>
+        <li>Publisher information</li>
+        <li>Access policy</li>
+        <li>Receipt statistics (if public)</li>
+        <li>ai-index.json download link</li>
+    </ul>
+</body>
+</html>

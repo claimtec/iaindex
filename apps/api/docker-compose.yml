@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      target: production
+    container_name: iaindex-verification-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=${SECRET_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - iaindex-network
+
+  # Optional: Redis for rate limiting (if not using slowapi's in-memory storage)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: iaindex-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis-data:/data
+  #   networks:
+  #     - iaindex-network
+  #   restart: unless-stopped
+
+networks:
+  iaindex-network:
+    driver: bridge
+
+# volumes:
+#   redis-data:

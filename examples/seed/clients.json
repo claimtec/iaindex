@@ -1,0 +1,83 @@
+[
+  {
+    "id": "650e8400-e29b-41d4-a716-446655440000",
+    "client_id": "openai-gpt4",
+    "client_name": "GPT-4",
+    "organization": "OpenAI",
+    "verified": true,
+    "metadata": {
+      "model": "gpt-4",
+      "version": "2024-05",
+      "capabilities": ["text-generation", "function-calling", "vision"],
+      "context_window": 128000,
+      "website": "https://openai.com"
+    }
+  },
+  {
+    "id": "650e8400-e29b-41d4-a716-446655440001",
+    "client_id": "anthropic-claude",
+    "client_name": "Claude",
+    "organization": "Anthropic",
+    "verified": true,
+    "metadata": {
+      "model": "claude-3-opus",
+      "version": "2024-02",
+      "capabilities": ["text-generation", "tool-use", "vision", "extended-thinking"],
+      "context_window": 200000,
+      "website": "https://anthropic.com"
+    }
+  },
+  {
+    "id": "650e8400-e29b-41d4-a716-446655440002",
+    "client_id": "google-gemini",
+    "client_name": "Gemini Pro",
+    "organization": "Google",
+    "verified": true,
+    "metadata": {
+      "model": "gemini-pro",
+      "version": "1.5",
+      "capabilities": ["text-generation", "vision", "multimodal"],
+      "context_window": 1000000,
+      "website": "https://deepmind.google/technologies/gemini/"
+    }
+  },
+  {
+    "id": "650e8400-e29b-41d4-a716-446655440003",
+    "client_id": "meta-llama",
+    "client_name": "Llama 3",
+    "organization": "Meta",
+    "verified": true,
+    "metadata": {
+      "model": "llama-3-70b",
+      "version": "3.0",
+      "capabilities": ["text-generation", "instruction-following"],
+      "context_window": 8192,
+      "open_source": true,
+      "website": "https://llama.meta.com"
+    }
+  },
+  {
+    "id": "650e8400-e29b-41d4-a716-446655440004",
+    "client_id": "perplexity-ai",
+    "client_name": "Perplexity AI",
+    "organization": "Perplexity",
+    "verified": true,
+    "metadata": {
+      "model": "pplx-70b-online",
+      "version": "1.0",
+      "capabilities": ["search", "citations", "real-time-information"],
+      "website": "https://perplexity.ai"
+    }
+  },
+  {
+    "id": "650e8400-e29b-41d4-a716-446655440005",
+    "client_id": "custom-crawler-1",
+    "client_name": "Custom LLM Crawler",
+    "organization": "Independent",
+    "verified": false,
+    "metadata": {
+      "purpose": "research",
+      "description": "Independent research crawler for academic purposes"
+    }
+  }
+]

@@ -1,0 +1,312 @@
+{
+  "name": "AIIndex API v1",
+  "description": "Pre-configured API connector for AIIndex API",
+  "base_url": "https://api.aiindex.org/v1",
+  "authentication": {
+    "type": "Private key in header",
+    "key_name": "Authorization",
+    "key_format": "Bearer [key]"
+  },
+  "shared_headers": {
+    "Content-Type": "application/json",
+    "X-AIIndex-Plugin": "Bubble/1.0.0"
+  },
+  "calls": [
+    {
+      "name": "Get Documents",
+      "method": "GET",
+      "endpoint": "/documents",
+      "description": "Retrieve all AIIndex documents for a domain",
+      "parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true,
+          "location": "query"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "location": "query",
+          "default": 100
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "required": false,
+          "location": "query",
+          "default": 0
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Get Document by ID",
+      "method": "GET",
+      "endpoint": "/documents/:document_id",
+      "description": "Retrieve a specific AIIndex document",
+      "parameters": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true,
+          "location": "path"
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Create Document",
+      "method": "POST",
+      "endpoint": "/documents",
+      "description": "Create a new AIIndex document",
+      "body_type": "JSON",
+      "body_parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "content",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "object",
+          "required": false
+        },
+        {
+          "name": "access",
+          "type": "object",
+          "required": false
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Update Document",
+      "method": "PUT",
+      "endpoint": "/documents/:document_id",
+      "description": "Update an existing AIIndex document",
+      "parameters": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true,
+          "location": "path"
+        }
+      ],
+      "body_type": "JSON",
+      "body_parameters": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "content",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "object",
+          "required": false
+        },
+        {
+          "name": "access",
+          "type": "object",
+          "required": false
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Delete Document",
+      "method": "DELETE",
+      "endpoint": "/documents/:document_id",
+      "description": "Delete an AIIndex document",
+      "parameters": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true,
+          "location": "path"
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Verify Domain",
+      "method": "POST",
+      "endpoint": "/domains/verify",
+      "description": "Initiate domain verification",
+      "body_type": "JSON",
+      "body_parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "verification_method",
+          "type": "text",
+          "required": false,
+          "default": "dns"
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Check Verification",
+      "method": "GET",
+      "endpoint": "/domains/:domain/verification",
+      "description": "Check domain verification status",
+      "parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true,
+          "location": "path"
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Get Domain Status",
+      "method": "GET",
+      "endpoint": "/domains/:domain/status",
+      "description": "Get current status for a domain",
+      "parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true,
+          "location": "path"
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Create Receipt",
+      "method": "POST",
+      "endpoint": "/receipts",
+      "description": "Create an access receipt",
+      "body_type": "JSON",
+      "body_parameters": [
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "ai_provider",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "access_type",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "timestamp",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "object",
+          "required": false
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Get Receipts",
+      "method": "GET",
+      "endpoint": "/receipts",
+      "description": "Retrieve access receipts",
+      "parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "ai_provider",
+          "type": "text",
+          "required": false,
+          "location": "query"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "location": "query",
+          "default": 100
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Bulk Sync",
+      "method": "POST",
+      "endpoint": "/documents/bulk",
+      "description": "Bulk sync multiple documents",
+      "body_type": "JSON",
+      "body_parameters": [
+        {
+          "name": "domain",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "documents",
+          "type": "array",
+          "required": true
+        }
+      ],
+      "response_type": "JSON"
+    },
+    {
+      "name": "Health Check",
+      "method": "GET",
+      "endpoint": "/health",
+      "description": "Check API health status",
+      "parameters": [],
+      "response_type": "JSON",
+      "requires_authentication": false
+    }
+  ]
+}

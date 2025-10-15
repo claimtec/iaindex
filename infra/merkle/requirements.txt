@@ -1,0 +1,10 @@
+# Merkle Attestation System Dependencies
+
+# Database
+supabase>=2.0.0
+
+# Cloud storage
+boto3>=1.28.0  # For S3 and R2
+
+# Optional: Enhanced logging
+python-json-logger>=2.0.0

@@ -1,0 +1,29 @@
+# Shopify App Configuration
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "AI Index"
+client_id = "YOUR_CLIENT_ID"
+application_url = "https://your-app-url.com"
+embedded = true
+
+[access_scopes]
+scopes = "read_themes,write_themes,read_content,read_analytics"
+
+[auth]
+redirect_urls = [
+  "https://your-app-url.com/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[[webhooks.subscriptions]]
+topics = ["products/create", "products/update", "products/delete"]
+uri = "/api/webhooks/content"
+
+[[webhooks.subscriptions]]
+topics = ["pages/create", "pages/update", "pages/delete"]
+uri = "/api/webhooks/content"
+
+[pos]
+embedded = false

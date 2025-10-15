@@ -1,0 +1,206 @@
+[
+  {
+    "version": "1.0",
+    "receipt_id": "550e8400-e29b-41d4-a716-446655440100",
+    "publisher_id": "example-blog.com",
+    "publisher_domain": "example-blog.com",
+    "client_id": "openai-gpt4",
+    "client_name": "GPT-4",
+    "client_version": "2024-05",
+    "timestamp": "2025-10-13T10:30:00Z",
+    "access": {
+      "url": "https://example-blog.com/.well-known/ai-index.json",
+      "method": "GET",
+      "status_code": 200,
+      "content_hash": "sha256:a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2",
+      "pages_accessed": [
+        "https://example-blog.com/posts/introduction-to-ai-agents",
+        "https://example-blog.com/posts/langchain-best-practices"
+      ]
+    },
+    "purpose": {
+      "type": "inference",
+      "description": "Answering user query about AI agent frameworks",
+      "commercial": true
+    },
+    "attribution": {
+      "method": "citation",
+      "citation_text": "Based on information from Tech Insights Blog",
+      "url": "https://example-blog.com"
+    },
+    "signature": {
+      "algorithm": "ES256",
+      "kid": "example-blog-2025",
+      "signature": "MEUCIQDv8K5X...",
+      "payload_hash": "sha256:b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5a6"
+    },
+    "metadata": {
+      "user_agent": "AIIndexSDK/1.0 (OpenAI)",
+      "sdk_version": "1.0.0",
+      "request_id": "req-abc123def456"
+    }
+  },
+  {
+    "version": "1.0",
+    "receipt_id": "550e8400-e29b-41d4-a716-446655440101",
+    "publisher_id": "techgear-shop.com",
+    "publisher_domain": "techgear-shop.com",
+    "client_id": "anthropic-claude",
+    "client_name": "Claude",
+    "client_version": "2024-02",
+    "timestamp": "2025-10-13T11:15:00Z",
+    "access": {
+      "url": "https://techgear-shop.com/.well-known/ai-index.json",
+      "method": "GET",
+      "status_code": 200,
+      "content_hash": "sha256:c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8",
+      "pages_accessed": [
+        "https://techgear-shop.com/products/mechanical-keyboard-pro",
+        "https://techgear-shop.com/products/wireless-mouse-elite"
+      ]
+    },
+    "purpose": {
+      "type": "inference",
+      "description": "Product recommendation for user shopping query",
+      "commercial": true
+    },
+    "attribution": {
+      "method": "link",
+      "citation_text": "Product information from TechGear Shop",
+      "url": "https://techgear-shop.com/products/mechanical-keyboard-pro"
+    },
+    "signature": {
+      "algorithm": "ES256",
+      "kid": "techgear-shop-2025",
+      "signature": "MEYCIQCwX5...",
+      "payload_hash": "sha256:d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0"
+    },
+    "metadata": {
+      "user_agent": "AIIndexSDK/1.0 (Anthropic)",
+      "sdk_version": "1.0.0",
+      "request_id": "req-def456ghi789"
+    }
+  },
+  {
+    "version": "1.0",
+    "receipt_id": "550e8400-e29b-41d4-a716-446655440102",
+    "publisher_id": "cloudforge-docs.dev",
+    "publisher_domain": "cloudforge-docs.dev",
+    "client_id": "google-gemini",
+    "client_name": "Gemini Pro",
+    "client_version": "1.5",
+    "timestamp": "2025-10-13T09:45:00Z",
+    "access": {
+      "url": "https://cloudforge-docs.dev/.well-known/ai-index.json",
+      "method": "GET",
+      "status_code": 200,
+      "content_hash": "sha256:e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z8a9b0c1d2",
+      "pages_accessed": [
+        "https://cloudforge-docs.dev/docs/getting-started",
+        "https://cloudforge-docs.dev/docs/api-reference"
+      ]
+    },
+    "purpose": {
+      "type": "inference",
+      "description": "Helping user with CloudForge deployment questions",
+      "commercial": true
+    },
+    "attribution": {
+      "method": "inline",
+      "citation_text": "According to CloudForge Documentation",
+      "url": "https://cloudforge-docs.dev"
+    },
+    "signature": {
+      "algorithm": "ES256",
+      "kid": "cloudforge-docs-2025",
+      "signature": "MEQCID8Y7...",
+      "payload_hash": "sha256:f9g0h1i2j3k4l5m6n7o8p9q0r1s2t3u4v5w6x7y8z9a0b1c2d3e4"
+    },
+    "metadata": {
+      "user_agent": "AIIndexSDK/1.0 (Google)",
+      "sdk_version": "1.0.0",
+      "request_id": "req-ghi789jkl012"
+    }
+  },
+  {
+    "version": "1.0",
+    "receipt_id": "550e8400-e29b-41d4-a716-446655440103",
+    "publisher_id": "technews-daily.com",
+    "publisher_domain": "technews-daily.com",
+    "client_id": "perplexity-ai",
+    "client_name": "Perplexity AI",
+    "client_version": "1.0",
+    "timestamp": "2025-10-12T14:20:00Z",
+    "access": {
+      "url": "https://technews-daily.com/.well-known/ai-index.json",
+      "method": "GET",
+      "status_code": 200,
+      "content_hash": "sha256:g1h2i3j4k5l6m7n8o9p0q1r2s3t4u5v6w7x8y9z0a1b2c3d4e5f6",
+      "pages_accessed": [
+        "https://technews-daily.com/articles/latest-ai-breakthroughs"
+      ]
+    },
+    "purpose": {
+      "type": "inference",
+      "description": "Search results for latest AI news",
+      "commercial": true
+    },
+    "attribution": {
+      "method": "citation",
+      "citation_text": "Source: TechNews Daily",
+      "url": "https://technews-daily.com/articles/latest-ai-breakthroughs"
+    },
+    "signature": {
+      "algorithm": "ES256",
+      "kid": "technews-2025",
+      "signature": "MEUCIAzP9...",
+      "payload_hash": "sha256:h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8"
+    },
+    "metadata": {
+      "user_agent": "AIIndexSDK/1.0 (Perplexity)",
+      "sdk_version": "1.0.0",
+      "request_id": "req-jkl012mno345"
+    }
+  },
+  {
+    "version": "1.0",
+    "receipt_id": "550e8400-e29b-41d4-a716-446655440104",
+    "publisher_id": "learncode.io",
+    "publisher_domain": "learncode.io",
+    "client_id": "meta-llama",
+    "client_name": "Llama 3",
+    "client_version": "3.0",
+    "timestamp": "2025-10-11T16:30:00Z",
+    "access": {
+      "url": "https://learncode.io/.well-known/ai-index.json",
+      "method": "GET",
+      "status_code": 200,
+      "content_hash": "sha256:i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0",
+      "pages_accessed": [
+        "https://learncode.io/courses/python-fundamentals",
+        "https://learncode.io/courses/web-development"
+      ]
+    },
+    "purpose": {
+      "type": "research",
+      "description": "Research on programming education content",
+      "commercial": false
+    },
+    "attribution": {
+      "method": "citation",
+      "citation_text": "Learning materials from LearnCode",
+      "url": "https://learncode.io"
+    },
+    "signature": {
+      "algorithm": "ES256",
+      "kid": "learncode-2025",
+      "signature": "MEQCIBnV2...",
+      "payload_hash": "sha256:j7k8l9m0n1o2p3q4r5s6t7u8v9w0x1y2z3a4b5c6d7e8f9g0h1i2"
+    },
+    "metadata": {
+      "user_agent": "AIIndexSDK/1.0 (Meta)",
+      "sdk_version": "1.0.0",
+      "request_id": "req-mno345pqr678"
+    }
+  }
+]

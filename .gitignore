@@ -1,0 +1,118 @@
+# AIIndex v1.1 - Git Ignore
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.staging
+.env.production
+*.env
+
+# Secrets and keys
+*.pem
+*.key
+*.crt
+*.p12
+keys/
+secrets/
+
+# Dependencies
+node_modules/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+*.egg-info/
+.docusaurus/
+apps/docs/.docusaurus/
+apps/docs/build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+deployment_*.log
+pm2-*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# Testing
+coverage/
+.nyc_output/
+.pytest_cache/
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Lock files (keep package-lock.json for reproducibility)
+# Uncomment next line if you prefer to ignore it
+# package-lock.json
+pnpm-lock.yaml
+
+# Production artifacts
+*.tgz
+*.zip
+*.tar.gz
+
+# PM2
+.pm2/
+pm2.log
+pm2-*.log
+
+# Vercel
+.vercel
+
+# Fly.io
+fly.toml
+
+# Azure
+.azure/
+
+# Backup files
+*.bak
+*.backup
+*~.sql
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+
+# Misc
+.vercel
+.turbo

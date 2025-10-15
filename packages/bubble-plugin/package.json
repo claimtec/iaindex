@@ -1,0 +1,44 @@
+{
+  "name": "@aiindex/bubble-plugin",
+  "version": "1.0.0",
+  "description": "Official AIIndex plugin for Bubble.io - Generate AI Index, verify domains, and track AI access",
+  "main": "manifest.json",
+  "scripts": {
+    "validate": "node validate-manifest.js",
+    "test": "echo \"Tests coming soon\"",
+    "package": "node package-plugin.js"
+  },
+  "keywords": [
+    "aiindex",
+    "bubble",
+    "bubble.io",
+    "plugin",
+    "ai",
+    "index",
+    "integration",
+    "no-code"
+  ],
+  "author": "AIIndex",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiindex/bubble-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/aiindex/bubble-plugin/issues"
+  },
+  "homepage": "https://docs.aiindex.org/bubble",
+  "files": [
+    "manifest.json",
+    "actions/",
+    "elements/",
+    "api/",
+    "README.md"
+  ],
+  "bubblePlugin": {
+    "category": "API Integration",
+    "pluginType": "Full",
+    "version": "1.0.0",
+    "minBubbleVersion": "3.0.0"
+  }
+}

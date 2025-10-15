@@ -1,0 +1,309 @@
+/**
+ * AI Index Verification Badge Styles for Squarespace
+ *
+ * Add this CSS to Design > Custom CSS in your Squarespace site
+ * to style the AI Index verification badge.
+ */
+
+.ai-index-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  cursor: default;
+}
+
+.ai-index-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.ai-index-badge svg {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.ai-index-badge span {
+  white-space: nowrap;
+}
+
+/* Responsive sizing */
+@media (max-width: 640px) {
+  .ai-index-badge {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .ai-index-badge svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Alternative badge styles */
+.ai-index-badge.badge-light {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ai-index-badge.badge-light:hover {
+  background: #f7fafc;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.ai-index-badge.badge-dark {
+  background: #1a202c;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ai-index-badge.badge-dark:hover {
+  background: #2d3748;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.ai-index-badge.badge-success {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+}
+
+.ai-index-badge.badge-success:hover {
+  box-shadow: 0 6px 16px rgba(72, 187, 120, 0.4);
+}
+
+/* Badge variations - minimal */
+.ai-index-badge.badge-minimal {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+  padding: 6px 14px;
+  font-size: 13px;
+  box-shadow: none;
+}
+
+.ai-index-badge.badge-minimal:hover {
+  background: rgba(102, 126, 234, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Badge variations - pill */
+.ai-index-badge.badge-pill {
+  border-radius: 50px;
+}
+
+/* Animation */
+@keyframes badge-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+  }
+}
+
+.ai-index-badge.badge-animated {
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* Integration with Squarespace blocks */
+.sqs-block-html .ai-index-badge {
+  margin: 10px 0;
+}
+
+/* Center badge in code block */
+.sqs-block-code .ai-index-badge {
+  display: inline-flex;
+}
+
+/* Footer badge styling */
+footer .ai-index-badge {
+  margin: 20px 0;
+}
+
+/* Header badge styling */
+header .ai-index-badge {
+  margin: 0 10px;
+}
+
+/* Config page specific styles */
+.aiindex-config-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.aiindex-config-page .code-block {
+  background: #1a202c;
+  color: #e2e8f0;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.aiindex-config-page .alert {
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.aiindex-config-page .alert-success {
+  background: #c6f6d5;
+  color: #22543d;
+  border-left: 4px solid #48bb78;
+}
+
+.aiindex-config-page .alert-error {
+  background: #fed7d7;
+  color: #742a2a;
+  border-left: 4px solid #f56565;
+}
+
+.aiindex-config-page .alert-info {
+  background: #bee3f8;
+  color: #2c5282;
+  border-left: 4px solid #4299e1;
+}
+
+/* Status indicators */
+.ai-index-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ai-index-status.status-active {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.ai-index-status.status-inactive {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.ai-index-status.status-pending {
+  background: #feebc8;
+  color: #7c2d12;
+}
+
+/* Loading spinner */
+.ai-index-loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #667eea;
+  border-radius: 50%;
+  animation: ai-index-spin 1s linear infinite;
+}
+
+@keyframes ai-index-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Button styles for config page */
+.ai-index-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ai-index-button:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.ai-index-button:active {
+  transform: translateY(0);
+}
+
+.ai-index-button.button-secondary {
+  background: #48bb78;
+}
+
+.ai-index-button.button-secondary:hover {
+  background: #38a169;
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+}
+
+/* Stats display */
+.ai-index-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.ai-index-stat {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+}
+
+.ai-index-stat-label {
+  font-size: 12px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.ai-index-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Utility classes */
+.ai-index-hidden {
+  display: none !important;
+}
+
+.ai-index-visible {
+  display: block !important;
+}
+
+.ai-index-text-center {
+  text-align: center;
+}
+
+.ai-index-mt-4 {
+  margin-top: 16px;
+}
+
+.ai-index-mb-4 {
+  margin-bottom: 16px;
+}
+
+.ai-index-p-4 {
+  padding: 16px;
+}

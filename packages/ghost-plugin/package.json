@@ -1,0 +1,25 @@
+{
+  "name": "@iaindex/ghost-plugin",
+  "version": "1.0.0",
+  "description": "Ghost CMS plugin for AI Index integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "ghost",
+    "ghost-plugin",
+    "ai-index",
+    "llm",
+    "cms"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "ghost": ">=5.0.0"
+  }
+}

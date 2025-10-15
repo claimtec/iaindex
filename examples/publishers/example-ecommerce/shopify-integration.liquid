@@ -1,0 +1,412 @@
+{% comment %}
+  AIIndex Shopify Theme Integration
+
+  This file demonstrates how to integrate AIIndex verification
+  and receipt handling into your Shopify theme.
+
+  Add snippets to your theme files as needed.
+{% endcomment %}
+
+{% comment %} ============================================
+  1. VERIFICATION BADGE (Footer)
+  Add to: snippets/footer.liquid or theme.liquid
+============================================ {% endcomment %}
+
+{% if shop.metafields.aiindex.verified %}
+<div class="aiindex-verification">
+  <a href="https://aiindex.org/publishers/{{ shop.domain }}"
+     class="aiindex-badge"
+     target="_blank"
+     rel="noopener"
+     title="Verified on AIIndex Network">
+    <svg width="120" height="40" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="badge-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="120" height="40" rx="4" fill="url(#badge-gradient)"/>
+      <circle cx="18" cy="20" r="6" fill="white"/>
+      <path d="M18 16 L18 24 M14 20 L22 20" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="30" y="18" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">AIIndex</text>
+      <text x="30" y="28" font-family="Arial, sans-serif" font-size="7" fill="white" opacity="0.9">Verified</text>
+    </svg>
+  </a>
+  <style>
+    .aiindex-verification {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .aiindex-badge {
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .aiindex-badge:hover {
+      opacity: 0.8;
+    }
+  </style>
+</div>
+{% endif %}
+
+
+{% comment %} ============================================
+  2. PRODUCT AI-READY BADGE
+  Add to: sections/product-template.liquid
+============================================ {% endcomment %}
+
+{% if product.metafields.aiindex.ai_optimized %}
+<div class="product-badge product-badge--ai">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <span>AI-Ready Product Data</span>
+</div>
+
+<style>
+  .product-badge--ai {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .product-badge--ai svg {
+    width: 14px;
+    height: 14px;
+  }
+</style>
+{% endif %}
+
+
+{% comment %} ============================================
+  3. AI-INDEX JSON LINK (Header)
+  Add to: theme.liquid in <head> section
+============================================ {% endcomment %}
+
+<link rel="alternate"
+      type="application/json"
+      href="{{ shop.url }}/.well-known/ai-index.json"
+      title="AI Index for {{ shop.name }}">
+
+<meta name="ai-index" content="{{ shop.url }}/.well-known/ai-index.json">
+
+
+{% comment %} ============================================
+  4. PRODUCT STRUCTURED DATA ENHANCEMENT
+  Add to: sections/product-template.liquid
+============================================ {% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "description": {{ product.description | strip_html | json }},
+  "image": {{ product.featured_image | img_url: 'large' | prepend: 'https:' | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ shop.name | json }}
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": {{ shop.url | append: product.url | json }},
+    "priceCurrency": {{ shop.currency | json }},
+    "price": {{ product.price | money_without_currency | remove: ',' }},
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+  }
+  {% if product.metafields.aiindex.ai_description %},
+  "aiIndex": {
+    "optimizedDescription": {{ product.metafields.aiindex.ai_description | json }},
+    "aiReady": true
+  }
+  {% endif %}
+}
+</script>
+
+
+{% comment %} ============================================
+  5. RECEIPT ATTRIBUTION TRACKING
+  Add to: theme.liquid before </body>
+============================================ {% endcomment %}
+
+{% if product %}
+<script>
+(function() {
+  // Check if visitor came from AI attribution link
+  const urlParams = new URLSearchParams(window.location.search);
+  const aiAttribution = urlParams.get('ai_ref');
+
+  if (aiAttribution) {
+    // Store attribution in session
+    sessionStorage.setItem('aiindex_attribution', JSON.stringify({
+      source: aiAttribution,
+      product: '{{ product.id }}',
+      timestamp: new Date().toISOString()
+    }));
+
+    // Track in analytics
+    if (window.analytics) {
+      window.analytics.track('AI Attribution Visit', {
+        source: aiAttribution,
+        product_id: '{{ product.id }}',
+        product_title: '{{ product.title }}'
+      });
+    }
+  }
+
+  // Send attribution with checkout
+  if (window.Shopify && window.Shopify.Checkout) {
+    const attribution = sessionStorage.getItem('aiindex_attribution');
+    if (attribution) {
+      window.Shopify.Checkout.setAttributes({
+        ai_attribution: attribution
+      });
+    }
+  }
+})();
+</script>
+{% endif %}
+
+
+{% comment %} ============================================
+  6. COLLECTION PAGE AI INDEX LINK
+  Add to: sections/collection-template.liquid
+============================================ {% endcomment %}
+
+{% if collection %}
+<div class="collection-meta">
+  <a href="{{ shop.url }}/.well-known/ai-index.json"
+     class="collection-ai-link"
+     target="_blank">
+    <svg width="14" height="14" viewBox="0 0 14 14">
+      <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M7 4v6M4 7h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    View AI-Ready Product Data
+  </a>
+</div>
+
+<style>
+  .collection-ai-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #6366F1;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+  .collection-ai-link:hover {
+    color: #4F46E5;
+    text-decoration: underline;
+  }
+</style>
+{% endif %}
+
+
+{% comment %} ============================================
+  7. SEARCH PAGE AI ENHANCEMENT
+  Add to: templates/search.liquid
+============================================ {% endcomment %}
+
+{% if search.performed %}
+<div class="search-ai-suggestion">
+  <p>
+    <strong>For AI Assistants:</strong>
+    This store provides structured product data via
+    <a href="{{ shop.url }}/.well-known/ai-index.json" target="_blank">
+      AIIndex Protocol
+    </a>
+    for better product recommendations.
+  </p>
+</div>
+
+<style>
+  .search-ai-suggestion {
+    background: #F3F4F6;
+    border-left: 3px solid #6366F1;
+    padding: 12px 16px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .search-ai-suggestion a {
+    color: #6366F1;
+    text-decoration: none;
+  }
+  .search-ai-suggestion a:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endif %}
+
+
+{% comment %} ============================================
+  8. CART PAGE ATTRIBUTION NOTICE
+  Add to: templates/cart.liquid
+============================================ {% endcomment %}
+
+<script>
+(function() {
+  const attribution = sessionStorage.getItem('aiindex_attribution');
+  if (attribution) {
+    const data = JSON.parse(attribution);
+    const notice = document.createElement('div');
+    notice.className = 'cart-ai-attribution';
+    notice.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="7" stroke="#10B981" stroke-width="1.5"/>
+        <path d="M5 8l2 2 4-4" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Product recommended by AI assistant</span>
+    `;
+
+    const cartForm = document.querySelector('.cart-form');
+    if (cartForm) {
+      cartForm.insertBefore(notice, cartForm.firstChild);
+    }
+  }
+})();
+</script>
+
+<style>
+  .cart-ai-attribution {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: #ECFDF5;
+    border: 1px solid #10B981;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    color: #065F46;
+    font-size: 14px;
+  }
+</style>
+
+
+{% comment %} ============================================
+  9. CUSTOM CSS FOR AI ELEMENTS
+  Add to: assets/theme.css or theme.scss.liquid
+============================================ {% endcomment %}
+
+<style>
+  /* AIIndex Badge Styles */
+  .aiindex-verification {
+    margin: 20px 0;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .aiindex-badge {
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  .aiindex-badge:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  /* AI-Ready Product Badge */
+  .product-badge--ai {
+    animation: aiGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes aiGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(79, 70, 229, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.6); }
+  }
+
+  /* Attribution Indicators */
+  .ai-attribution-badge {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .aiindex-verification {
+      margin: 15px 0;
+    }
+
+    .aiindex-badge svg {
+      width: 100px;
+      height: 33px;
+    }
+  }
+</style>
+
+
+{% comment %} ============================================
+  10. JAVASCRIPT HELPER FUNCTIONS
+  Add to: assets/aiindex-helpers.js
+============================================ {% endcomment %}
+
+<script>
+window.AIIndex = {
+  // Track AI-attributed product view
+  trackProductView: function(productId, aiSource) {
+    if (window.analytics) {
+      window.analytics.track('AI Product View', {
+        product_id: productId,
+        ai_source: aiSource,
+        timestamp: new Date().toISOString()
+      });
+    }
+  },
+
+  // Check if current session has AI attribution
+  hasAttribution: function() {
+    return !!sessionStorage.getItem('aiindex_attribution');
+  },
+
+  // Get attribution data
+  getAttribution: function() {
+    const data = sessionStorage.getItem('aiindex_attribution');
+    return data ? JSON.parse(data) : null;
+  },
+
+  // Clear attribution (after checkout)
+  clearAttribution: function() {
+    sessionStorage.removeItem('aiindex_attribution');
+  },
+
+  // Add attribution to product links
+  addAttributionToLinks: function(aiSource) {
+    const links = document.querySelectorAll('a[href*="/products/"]');
+    links.forEach(link => {
+      const url = new URL(link.href);
+      url.searchParams.set('ai_ref', aiSource);
+      link.href = url.toString();
+    });
+  }
+};
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Check for AI attribution in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const aiRef = urlParams.get('ai_ref');
+
+  if (aiRef) {
+    console.log('AIIndex: Product accessed via AI attribution:', aiRef);
+  }
+
+  // Clear attribution after successful checkout
+  if (window.Shopify && Shopify.checkout && window.location.pathname.includes('/thank_you')) {
+    AIIndex.clearAttribution();
+  }
+});
+</script>

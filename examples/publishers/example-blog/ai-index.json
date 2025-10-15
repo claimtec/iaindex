@@ -1,0 +1,184 @@
+{
+  "version": "1.0",
+  "publisher_id": "example-blog.com",
+  "domain": "example-blog.com",
+  "last_updated": "2025-10-13T10:00:00Z",
+  "publisher": {
+    "name": "Tech Insights Blog",
+    "description": "A technology blog covering AI, web development, and software engineering best practices",
+    "url": "https://example-blog.com",
+    "contact": {
+      "email": "hello@example-blog.com",
+      "url": "https://example-blog.com/contact"
+    },
+    "logo": "https://example-blog.com/wp-content/uploads/logo.png"
+  },
+  "entities": [
+    {
+      "type": "Person",
+      "name": "Sarah Johnson",
+      "description": "Senior Software Engineer and Tech Writer",
+      "url": "https://example-blog.com/author/sarah-johnson",
+      "image": "https://example-blog.com/wp-content/uploads/sarah.jpg",
+      "properties": {
+        "role": "Lead Author",
+        "expertise": ["AI/ML", "Web Development", "DevOps"]
+      }
+    },
+    {
+      "type": "Organization",
+      "name": "Tech Insights Media",
+      "description": "Digital media company focused on technology education",
+      "url": "https://example-blog.com/about"
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://example-blog.com/posts/introduction-to-ai-agents",
+      "title": "Introduction to AI Agents: Building Intelligent Automation",
+      "description": "Learn how to build AI agents that can autonomously complete tasks using large language models",
+      "content_type": "article",
+      "published": "2025-10-01T09:00:00Z",
+      "modified": "2025-10-05T14:30:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["AI", "Agents", "Automation", "LLM"],
+      "summary": "This article introduces the concept of AI agents and demonstrates how to build autonomous systems using LLMs. It covers agent architectures, tool use, memory systems, and practical implementation patterns with code examples."
+    },
+    {
+      "url": "https://example-blog.com/posts/langchain-best-practices",
+      "title": "LangChain Best Practices for Production Applications",
+      "description": "Essential patterns and practices for building production-ready LangChain applications",
+      "content_type": "article",
+      "published": "2025-09-28T10:00:00Z",
+      "modified": "2025-09-28T10:00:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["LangChain", "Python", "Best Practices", "Production"],
+      "summary": "A comprehensive guide covering error handling, rate limiting, cost optimization, and monitoring strategies for LangChain applications. Includes real-world examples from production deployments."
+    },
+    {
+      "url": "https://example-blog.com/posts/prompt-engineering-guide",
+      "title": "The Complete Guide to Prompt Engineering",
+      "description": "Master the art of prompt engineering for better LLM outputs",
+      "content_type": "article",
+      "published": "2025-09-20T11:00:00Z",
+      "modified": "2025-09-22T16:00:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["Prompt Engineering", "LLM", "AI", "GPT"],
+      "summary": "This guide covers prompt engineering techniques including zero-shot, few-shot, chain-of-thought prompting, and advanced strategies for improving LLM response quality and consistency."
+    },
+    {
+      "url": "https://example-blog.com/posts/rag-systems-explained",
+      "title": "RAG Systems Explained: Retrieval-Augmented Generation",
+      "description": "Understanding how RAG systems enhance LLM capabilities with external knowledge",
+      "content_type": "article",
+      "published": "2025-09-15T08:30:00Z",
+      "modified": "2025-09-15T08:30:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["RAG", "Vector Database", "Embeddings", "LLM"],
+      "summary": "An in-depth exploration of RAG architectures, covering vector databases, embedding strategies, retrieval methods, and practical implementation using popular frameworks."
+    },
+    {
+      "url": "https://example-blog.com/posts/web-scraping-ethics",
+      "title": "Web Scraping Ethics and Best Practices",
+      "description": "How to scrape responsibly while respecting website policies",
+      "content_type": "article",
+      "published": "2025-09-10T13:00:00Z",
+      "modified": "2025-09-10T13:00:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["Web Scraping", "Ethics", "robots.txt", "Best Practices"],
+      "summary": "This article discusses ethical web scraping practices, respecting robots.txt, rate limiting, attribution requirements, and emerging standards like AIIndex for AI-specific access control."
+    },
+    {
+      "url": "https://example-blog.com/posts/vector-databases-comparison",
+      "title": "Vector Database Comparison: Pinecone vs Weaviate vs Qdrant",
+      "description": "Comparing popular vector databases for AI applications",
+      "content_type": "article",
+      "published": "2025-09-05T10:00:00Z",
+      "modified": "2025-09-08T15:00:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["Vector Database", "Pinecone", "Weaviate", "Qdrant"],
+      "summary": "A detailed comparison of leading vector databases, analyzing performance, features, pricing, and use cases. Includes benchmarks and recommendations for different scenarios."
+    },
+    {
+      "url": "https://example-blog.com/posts/building-chatbots-claude",
+      "title": "Building Production Chatbots with Claude AI",
+      "description": "Learn how to build robust chatbots using Anthropic's Claude",
+      "content_type": "article",
+      "published": "2025-08-30T09:00:00Z",
+      "modified": "2025-08-30T09:00:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["Claude", "Chatbots", "Anthropic", "Conversational AI"],
+      "summary": "A practical guide to building production-grade chatbots with Claude, covering conversation management, context handling, safety features, and integration patterns."
+    },
+    {
+      "url": "https://example-blog.com/posts/openai-function-calling",
+      "title": "Mastering OpenAI Function Calling",
+      "description": "Advanced patterns for OpenAI's function calling capabilities",
+      "content_type": "article",
+      "published": "2025-08-25T11:30:00Z",
+      "modified": "2025-08-25T11:30:00Z",
+      "author": "Sarah Johnson",
+      "tags": ["OpenAI", "Function Calling", "GPT-4", "Tool Use"],
+      "summary": "Comprehensive coverage of OpenAI's function calling feature, including schema design, error handling, nested calls, and real-world use cases like data extraction and API integration."
+    },
+    {
+      "url": "https://example-blog.com/about",
+      "title": "About Tech Insights Blog",
+      "description": "Learn about our mission to make AI technology accessible",
+      "content_type": "about",
+      "published": "2025-08-01T00:00:00Z",
+      "modified": "2025-09-01T00:00:00Z",
+      "author": "Tech Insights Team",
+      "tags": ["About"],
+      "summary": "Tech Insights Blog is dedicated to providing high-quality, practical content about AI, machine learning, and software development. Our mission is to help developers build better AI applications."
+    },
+    {
+      "url": "https://example-blog.com/contact",
+      "title": "Contact Us",
+      "description": "Get in touch with the Tech Insights team",
+      "content_type": "page",
+      "published": "2025-08-01T00:00:00Z",
+      "modified": "2025-08-01T00:00:00Z",
+      "author": "Tech Insights Team",
+      "tags": ["Contact"],
+      "summary": "Contact information and inquiry form for Tech Insights Blog. We welcome questions, collaboration opportunities, and feedback from our readers."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Can I use content from this blog in my AI training data?",
+      "answer": "Yes, with proper attribution and compliance with our access policy. Please send access receipts to our webhook endpoint and include proper citations in any derivative works.",
+      "category": "Usage Rights"
+    },
+    {
+      "question": "How often is new content published?",
+      "answer": "We publish new articles weekly, typically on Mondays. Subscribe to our RSS feed or newsletter to stay updated.",
+      "category": "Content"
+    },
+    {
+      "question": "Do you offer consulting services?",
+      "answer": "Yes, we offer consulting for AI implementation projects. Contact us through our contact form for more information.",
+      "category": "Services"
+    }
+  ],
+  "access_policy": {
+    "allowed": true,
+    "attribution_required": true,
+    "commercial_use": true,
+    "receipt_required": true,
+    "webhook_url": "https://example-blog.com/api/receipts"
+  },
+  "verification": {
+    "verified": true,
+    "verified_at": "2025-10-01T00:00:00Z",
+    "verification_url": "https://aiindex.org/publishers/example-blog.com"
+  },
+  "metadata": {
+    "cms": "WordPress",
+    "cms_version": "6.4",
+    "plugin_version": "aiindex-wp-1.0.0",
+    "language": "en",
+    "content_license": "CC BY 4.0",
+    "update_frequency": "weekly"
+  }
+}

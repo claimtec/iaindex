@@ -1,0 +1,129 @@
+# AIIndex for WordPress
+# Copyright (C) 2024 AIIndex
+# This file is distributed under the MIT License.
+msgid ""
+msgstr ""
+"Project-Id-Version: AIIndex for WordPress 1.0.0\n"
+"Report-Msgid-Bugs-To: https://aiindex.dev/support\n"
+"POT-Creation-Date: 2024-01-01 00:00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin/class-admin.php
+msgid "AIIndex"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Receipts"
+msgstr ""
+
+msgid "Enable AIIndex"
+msgstr ""
+
+msgid "Content Types"
+msgstr ""
+
+msgid "Include Posts"
+msgstr ""
+
+msgid "Include Pages"
+msgstr ""
+
+msgid "Webhook URL"
+msgstr ""
+
+msgid "Sync Frequency"
+msgstr ""
+
+msgid "Index URL"
+msgstr ""
+
+msgid "Cryptographic Keys"
+msgstr ""
+
+msgid "Public Key"
+msgstr ""
+
+msgid "Private Key"
+msgstr ""
+
+msgid "Domain Verification"
+msgstr ""
+
+msgid "Receipt Analytics"
+msgstr ""
+
+msgid "Total Receipts"
+msgstr ""
+
+msgid "Last 7 Days"
+msgstr ""
+
+msgid "Last 30 Days"
+msgstr ""
+
+msgid "Receipts by Indexer"
+msgstr ""
+
+msgid "Indexer"
+msgstr ""
+
+msgid "Receipt Count"
+msgstr ""
+
+msgid "View All Receipts"
+msgstr ""
+
+msgid "Export to CSV"
+msgstr ""
+
+msgid "Generating..."
+msgstr ""
+
+msgid "Verifying..."
+msgstr ""
+
+msgid "Success!"
+msgstr ""
+
+msgid "Error occurred"
+msgstr ""
+
+msgid "Settings saved successfully."
+msgstr ""
+
+msgid "Keys generated successfully"
+msgstr ""
+
+msgid "Domain verified successfully"
+msgstr ""
+
+msgid "Permission denied"
+msgstr ""
+
+msgid "Invalid receipt data"
+msgstr ""
+
+msgid "Receipt saved successfully"
+msgstr ""
+
+msgid "AI Index Verified"
+msgstr ""
+
+msgid "AI Index Pending"
+msgstr ""
+
+msgid "%d indexing receipt"
+msgid_plural "%d indexing receipts"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Verified %s"
+msgstr ""

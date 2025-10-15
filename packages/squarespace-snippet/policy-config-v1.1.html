@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIIndex v1.1 Policy Configuration - Webflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .section {
+            padding: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .toggle-label p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .verification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .verification-card {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .verification-card .icon {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .verification-card .icon.verified {
+            color: #4CAF50;
+        }
+
+        .verification-card .icon.pending {
+            color: #999;
+        }
+
+        .verification-card strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .verification-card .status {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .analytics-card {
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .analytics-card .value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .analytics-card .value.success {
+            color: #4CAF50;
+        }
+
+        .analytics-card .value.error {
+            color: #F44336;
+        }
+
+        .analytics-card .value.warning {
+            color: #FF9800;
+        }
+
+        .analytics-card .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        .code-box {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AIIndex v1.1 Configuration</h1>
+            <p>Webflow Edition - Configure AI policies and verification</p>
+        </div>
+
+        <div class="section">
+            <div id="success-alert" class="alert success">
+                Settings saved successfully! Your AI Index has been regenerated.
+            </div>
+
+            <h2>AI Policy Controls</h2>
+
+            <div class="toggle-item">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="blockTraining" />
+                    <span class="slider"></span>
+                </label>
+                <div class="toggle-label">
+                    <strong>Block Model Training</strong>
+                    <p>Prevent AI systems from using your content for model training. Sets policy.training="block".</p>
+                </div>
+            </div>
+
+            <div class="toggle-item">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="allowRetrievalOnly" />
+                    <span class="slider"></span>
+                </label>
+                <div class="toggle-label">
+                    <strong>Allow Retrieval Only</strong>
+                    <p>Block training but allow retrieval for RAG/search. Sets policy.training="block", policy.retrieval="allow".</p>
+                </div>
+            </div>
+
+            <div class="toggle-item">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="requireSignedReceipts" />
+                    <span class="slider"></span>
+                </label>
+                <div class="toggle-label">
+                    <strong>Require Signed Receipts</strong>
+                    <p>Require cryptographic signatures on all indexing receipts. Sets receipts.require_signed=true.</p>
+                </div>
+            </div>
+
+            <div class="toggle-item">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="enableRenderFallback" />
+                    <span class="slider"></span>
+                </label>
+                <div class="toggle-label">
+                    <strong>Enable Render Fallback</strong>
+                    <p>Enable edge rendering for dynamic content. Sets render_fallback.mode="edge".</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="saveSettings()">Save Policy Settings</button>
+                <button class="btn btn-secondary" onclick="regenerateIndex()">Regenerate AI Index</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Verification Status</h2>
+            <div class="verification-grid">
+                <div class="verification-card">
+                    <span class="icon pending" id="domain-icon">○</span>
+                    <strong>Domain Verification</strong>
+                    <span class="status" id="domain-status">Pending</span>
+                </div>
+                <div class="verification-card">
+                    <span class="icon pending" id="c2pa-icon">○</span>
+                    <strong>C2PA Provenance</strong>
+                    <span class="status" id="c2pa-status">Pending</span>
+                </div>
+                <div class="verification-card">
+                    <span class="icon pending" id="merkle-icon">○</span>
+                    <strong>Merkle Attestation</strong>
+                    <span class="status" id="merkle-status">Pending</span>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="verifyDomain()">Verify Domain</button>
+                <button class="btn btn-secondary" onclick="viewLiveBadge()">View Live Badge</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Receipt Analytics (Last 7 Days)</h2>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="value" id="total-receipts">0</div>
+                    <div class="label">Total Receipts</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="value success" id="allowed-count">0</div>
+                    <div class="label">Allowed</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="value error" id="denied-count">0</div>
+                    <div class="label">Denied</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="value warning" id="violations-count">0</div>
+                    <div class="label">Violations</div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="openDashboard()">View Full Dashboard</button>
+        </div>
+
+        <div class="section">
+            <h2>Badge Embed Code</h2>
+            <p style="margin-bottom: 15px;">Copy this code to display the verification badge on your Webflow site:</p>
+            <div class="code-box" id="embed-code">&lt;div id="aiindex-badge"&gt;&lt;/div&gt;
+&lt;script src="https://cdn.aiindex.org/badge.js" data-domain="yoursite.com"&gt;&lt;/script&gt;</div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="copyEmbedCode()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved settings
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('aiindex_v1.1_settings') || '{}');
+            document.getElementById('blockTraining').checked = settings.blockTraining || false;
+            document.getElementById('allowRetrievalOnly').checked = settings.allowRetrievalOnly || false;
+            document.getElementById('requireSignedReceipts').checked = settings.requireSignedReceipts || false;
+            document.getElementById('enableRenderFallback').checked = settings.enableRenderFallback || false;
+        }
+
+        // Save settings
+        function saveSettings() {
+            const settings = {
+                blockTraining: document.getElementById('blockTraining').checked,
+                allowRetrievalOnly: document.getElementById('allowRetrievalOnly').checked,
+                requireSignedReceipts: document.getElementById('requireSignedReceipts').checked,
+                enableRenderFallback: document.getElementById('enableRenderFallback').checked
+            };
+
+            localStorage.setItem('aiindex_v1.1_settings', JSON.stringify(settings));
+
+            const alert = document.getElementById('success-alert');
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 3000);
+
+            // In production, this would call your API
+            regenerateIndex();
+        }
+
+        // Regenerate AI Index
+        function regenerateIndex() {
+            console.log('Regenerating AI Index with v1.1 policies...');
+            // API call would go here
+        }
+
+        // Verify domain
+        function verifyDomain() {
+            console.log('Verifying domain...');
+            // Simulate verification
+            setTimeout(() => {
+                document.getElementById('domain-icon').innerHTML = '✓';
+                document.getElementById('domain-icon').classList.add('verified');
+                document.getElementById('domain-status').textContent = 'Verified';
+            }, 1000);
+        }
+
+        // View live badge
+        function viewLiveBadge() {
+            window.open('https://aiindex.org/badge-preview?domain=' + window.location.hostname, '_blank');
+        }
+
+        // Copy embed code
+        function copyEmbedCode() {
+            const code = document.getElementById('embed-code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Embed code copied to clipboard!');
+            });
+        }
+
+        // Open dashboard
+        function openDashboard() {
+            window.open('https://aiindex.org/dashboard?domain=' + window.location.hostname, '_blank');
+        }
+
+        // Load analytics
+        function loadAnalytics() {
+            // Simulate loading analytics
+            document.getElementById('total-receipts').textContent = '42';
+            document.getElementById('allowed-count').textContent = '38';
+            document.getElementById('denied-count').textContent = '4';
+            document.getElementById('violations-count').textContent = '2';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            loadAnalytics();
+
+            // Update embed code with actual domain
+            const embedCode = document.getElementById('embed-code');
+            embedCode.innerHTML = embedCode.innerHTML.replace('yoursite.com', window.location.hostname);
+        });
+    </script>
+</body>
+</html>

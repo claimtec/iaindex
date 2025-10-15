@@ -1,0 +1,50 @@
+# IA Index Infrastructure Configuration
+# Copy this file to terraform.tfvars and fill in your values
+
+# Project Configuration
+project_name = "iaindex"
+environment  = "production"
+aws_region   = "us-east-1"
+domain_name  = "iaindex.dev"
+
+# Cloudflare Configuration
+cloudflare_api_token  = "your-cloudflare-api-token"
+cloudflare_account_id = "your-cloudflare-account-id"
+
+# Vercel Configuration
+vercel_api_token = "your-vercel-api-token"
+github_repo      = "your-org/iaindex"
+
+# Fly.io Configuration
+fly_app_hostname = "iaindex-api.fly.dev"
+
+# Supabase Configuration
+supabase_url = "https://your-project.supabase.co"
+supabase_key = "your-supabase-anon-key"
+
+# Monitoring
+alert_email = "alerts@iaindex.dev"
+
+# Feature Flags
+enable_r2         = false
+enable_cloudfront = true
+
+# Storage Configuration
+attestation_retention_days = 90
+enable_versioning          = true
+
+# CDN Configuration
+cdn_price_class = "PriceClass_100"
+
+# Logging Configuration
+log_retention_days = 30
+
+# Backup Configuration
+enable_automated_backups = true
+backup_retention_days    = 7
+
+# Additional Tags
+additional_tags = {
+  Team       = "Platform"
+  CostCenter = "Engineering"
+}
