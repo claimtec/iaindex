@@ -136,7 +136,7 @@ async def get_system_analytics(
         # Get verified publishers count
         publishers_query = supabase.table("publishers").select(
             "*", count="exact"
-        ).eq("verified", True).execute()
+        ).eq("domain_verified", True).execute()
 
         verified_publishers = publishers_query.count or 0
 

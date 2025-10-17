@@ -1,0 +1,25 @@
+{
+  "name": "iaindex-publisher-example",
+  "version": "1.0.0",
+  "description": "IAIndex Publisher Example - Complete integration guide",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "verify": "node verify-domain.js",
+    "generate": "node generate-index.js",
+    "test-receipt": "node test-receipt.js"
+  },
+  "keywords": [
+    "iaindex",
+    "publisher",
+    "ai-index"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
+  }
+}

@@ -12,7 +12,7 @@ from ..config import settings
 logger = logging.getLogger(__name__)
 
 # Security schemes
-bearer_scheme = HTTPBearer()
+bearer_scheme = HTTPBearer(auto_error=False)
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
@@ -163,8 +163,8 @@ async def get_api_key(
 
 
 async def optional_auth(
-    api_key: Optional[str] = Security(api_key_header),
-    credentials: Optional[HTTPAuthorizationCredentials] = Security(bearer_scheme)
+    api_key: Optional[str] = Depends(api_key_header),
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(bearer_scheme)
 ) -> Optional[str]:
     """
     Optional authentication dependency

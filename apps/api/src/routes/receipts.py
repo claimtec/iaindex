@@ -68,7 +68,7 @@ async def ingest_receipt(
         # Verify publisher is verified
         publisher = supabase.table("publishers").select("*").eq(
             "domain", receipt.publisher_domain
-        ).eq("verified", True).execute()
+        ).eq("domain_verified", True).execute()
 
         if not publisher.data:
             logger.warning(f"Unverified publisher: {receipt.publisher_domain}")

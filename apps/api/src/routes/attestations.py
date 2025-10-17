@@ -5,9 +5,11 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from supabase import Client
-from datetime import datetime, date
+from datetime import datetime
+import datetime as dt
 import logging
 from typing import Dict, Any, List, Optional
+from pydantic import BaseModel
 
 from ..services.merkle import MerkleTreeService
 from ..middleware.auth import optional_auth
@@ -27,8 +29,6 @@ async def get_supabase_client() -> Client:
 
 class AttestationResponse(BaseModel):
     """Response model for attestation"""
-    from pydantic import BaseModel
-
     date: str
     merkle_root: str
     receipt_count: int
@@ -65,7 +65,7 @@ async def get_attestation(
         date_key = date_obj.isoformat()
 
         # Check if attestation already exists
-        existing = supabase.table("attestations").select("*").eq(
+        existing = supabase.table("merkle_roots").select("*").eq(
             "date", date_key
         ).execute()
 
@@ -127,7 +127,7 @@ async def get_attestation(
             "updated_at": datetime.utcnow().isoformat()
         }
 
-        supabase.table("attestations").insert(attestation_data).execute()
+        supabase.table("merkle_roots").insert(attestation_data).execute()
 
         # Update receipts with merkle root
         for receipt in receipts:
@@ -270,7 +270,7 @@ async def list_attestations(
     and statistics.
     """
     try:
-        query = supabase.table("attestations").select(
+        query = supabase.table("merkle_roots").select(
             "*", count="exact"
         ).order("date", desc=True).range(offset, offset + limit - 1)
 

@@ -1,0 +1,54 @@
+{
+  "name": "iaindex-sdk",
+  "version": "1.0.0",
+  "description": "Official IAIndex SDK for Node.js - Track and verify AI content usage",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\" \"__tests__/**/*.ts\""
+  },
+  "keywords": [
+    "iaindex",
+    "ai",
+    "content-verification",
+    "receipts",
+    "attestation",
+    "cryptography"
+  ],
+  "author": "ClaimTec",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/claimtec/iaindex.git",
+    "directory": "packages/sdk-nodejs"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "elliptic": "^6.5.4"
+  },
+  "devDependencies": {
+    "@types/elliptic": "^6.4.18",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}

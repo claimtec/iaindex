@@ -22,13 +22,18 @@ from .types import (
     Purpose,
     Attribution,
 )
+from .publisher import IAIndexPublisher
+from .client import IAIndexClient
+from .crypto import CryptoUtils, generate_keypair
 
 __version__ = "1.0.0"
 __all__ = [
+    # Core generator and validator
     "AIIndexGenerator",
     "SignatureManager",
     "ReceiptHandler",
     "Validator",
+    # Type definitions
     "AIIndexDocument",
     "Publisher",
     "Entity",
@@ -40,4 +45,10 @@ __all__ = [
     "Access",
     "Purpose",
     "Attribution",
+    # API integration classes
+    "IAIndexPublisher",
+    "IAIndexClient",
+    # Crypto utilities
+    "CryptoUtils",
+    "generate_keypair",
 ]

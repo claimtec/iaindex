@@ -8,15 +8,18 @@ import logging
 import hashlib
 import json
 import os
-from typing import List, Dict, Any, Optional, Literal
+from typing import List, Dict, Any, Optional, Literal, TYPE_CHECKING
 from datetime import datetime
 from pydantic import BaseModel, Field, HttpUrl
 import httpx
-from sentence_transformers import SentenceTransformer
-import tiktoken
-import pinecone
-from weaviate import Client as WeaviateClient
-import numpy as np
+
+# Lazy imports for optional dependencies
+if TYPE_CHECKING:
+    from sentence_transformers import SentenceTransformer
+    import pinecone
+    from weaviate import Client as WeaviateClient
+    import numpy as np
+    import tiktoken
 
 logger = logging.getLogger(__name__)
 
@@ -170,19 +173,28 @@ class EmbeddingsService:
         self.pinecone_index = None
         self.weaviate_client = None
 
-        # Initialize tokenizer for chunking
+        # Initialize tokenizer for chunking (lazy loaded)
         try:
+            import tiktoken
             self.tokenizer = tiktoken.get_encoding("cl100k_base")
             logger.info("Tokenizer initialized")
+        except ImportError:
+            logger.warning("tiktoken not installed, using fallback token counting")
+            self.tokenizer = None
         except Exception as e:
             logger.warning(f"Failed to initialize tokenizer: {e}")
+            self.tokenizer = None
 
     def _init_local_model(self):
         """Initialize local embedding model"""
         if self.local_model is None:
             try:
+                from sentence_transformers import SentenceTransformer
                 self.local_model = SentenceTransformer(self.config.LOCAL_MODEL_NAME)
                 logger.info(f"Loaded local model: {self.config.LOCAL_MODEL_NAME}")
+            except ImportError as e:
+                logger.error(f"sentence-transformers not installed: {e}")
+                raise ModelError("sentence-transformers library is required for local models. Please install it or use OpenAI embeddings instead.")
             except Exception as e:
                 logger.error(f"Failed to load local model: {e}")
                 raise ModelError(f"Failed to load local model: {str(e)}")
@@ -191,12 +203,16 @@ class EmbeddingsService:
         """Initialize Pinecone client"""
         if self.pinecone_index is None:
             try:
+                import pinecone
                 pinecone.init(
                     api_key=self.config.PINECONE_API_KEY,
                     environment=self.config.PINECONE_ENVIRONMENT
                 )
                 self.pinecone_index = pinecone.Index(self.config.PINECONE_INDEX_NAME)
                 logger.info(f"Connected to Pinecone index: {self.config.PINECONE_INDEX_NAME}")
+            except ImportError as e:
+                logger.error(f"pinecone library not installed: {e}")
+                raise VectorStoreError("pinecone library is required. Please install it or use Weaviate instead.")
             except Exception as e:
                 logger.error(f"Failed to initialize Pinecone: {e}")
                 raise VectorStoreError(f"Failed to initialize Pinecone: {str(e)}")
@@ -205,6 +221,7 @@ class EmbeddingsService:
         """Initialize Weaviate client"""
         if self.weaviate_client is None:
             try:
+                from weaviate import Client as WeaviateClient
                 auth_config = None
                 if self.config.WEAVIATE_API_KEY:
                     from weaviate.auth import AuthApiKey
@@ -215,6 +232,9 @@ class EmbeddingsService:
                     auth_client_secret=auth_config
                 )
                 logger.info(f"Connected to Weaviate at {self.config.WEAVIATE_URL}")
+            except ImportError as e:
+                logger.error(f"weaviate library not installed: {e}")
+                raise VectorStoreError("weaviate library is required. Please install it or use Pinecone instead.")
             except Exception as e:
                 logger.error(f"Failed to initialize Weaviate: {e}")
                 raise VectorStoreError(f"Failed to initialize Weaviate: {str(e)}")

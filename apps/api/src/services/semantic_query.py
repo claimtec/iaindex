@@ -6,12 +6,15 @@ Only available for verified publishers with analytics tracking.
 """
 import logging
 import hashlib
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, TYPE_CHECKING
 from datetime import datetime
 from pydantic import BaseModel, Field
-import pinecone
-from weaviate import Client as WeaviateClient
-import numpy as np
+
+# Lazy imports for optional dependencies
+if TYPE_CHECKING:
+    import pinecone
+    from weaviate import Client as WeaviateClient
+    import numpy as np
 
 from .embeddings import EmbeddingsService, EmbeddingsConfig, VectorStore
 
@@ -127,12 +130,16 @@ class SemanticQueryService:
         """Initialize Pinecone client"""
         if self.pinecone_index is None:
             try:
+                import pinecone
                 pinecone.init(
                     api_key=self.config.PINECONE_API_KEY,
                     environment=self.config.PINECONE_ENVIRONMENT
                 )
                 self.pinecone_index = pinecone.Index(self.config.PINECONE_INDEX_NAME)
                 logger.info(f"Connected to Pinecone index: {self.config.PINECONE_INDEX_NAME}")
+            except ImportError as e:
+                logger.error(f"pinecone library not installed: {e}")
+                raise VectorStoreQueryError("pinecone library is required for Pinecone vector store")
             except Exception as e:
                 logger.error(f"Failed to initialize Pinecone: {e}")
                 raise VectorStoreQueryError(f"Failed to initialize Pinecone: {str(e)}")
@@ -141,6 +148,7 @@ class SemanticQueryService:
         """Initialize Weaviate client"""
         if self.weaviate_client is None:
             try:
+                from weaviate import Client as WeaviateClient
                 auth_config = None
                 if self.config.WEAVIATE_API_KEY:
                     from weaviate.auth import AuthApiKey
@@ -151,6 +159,9 @@ class SemanticQueryService:
                     auth_client_secret=auth_config
                 )
                 logger.info(f"Connected to Weaviate at {self.config.WEAVIATE_URL}")
+            except ImportError as e:
+                logger.error(f"weaviate library not installed: {e}")
+                raise VectorStoreQueryError("weaviate library is required for Weaviate vector store")
             except Exception as e:
                 logger.error(f"Failed to initialize Weaviate: {e}")
                 raise VectorStoreQueryError(f"Failed to initialize Weaviate: {str(e)}")

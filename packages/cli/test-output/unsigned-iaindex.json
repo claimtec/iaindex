@@ -1,0 +1,36 @@
+{
+  "version": "1.1",
+  "url": "https://example.com/blog/my-article",
+  "content": {
+    "title": "How AI is Transforming Web Development",
+    "description": "An in-depth look at how artificial intelligence is changing the way we build websites and applications.",
+    "type": "article"
+  },
+  "aiGenerated": {
+    "percentage": 60,
+    "sections": [
+      "introduction",
+      "main-content",
+      "code-examples"
+    ]
+  },
+  "humanOversight": {
+    "level": "full",
+    "verifiedBy": "John Doe"
+  },
+  "timestamp": "2025-10-17T07:45:52.497Z",
+  "publisher": {
+    "name": "Example Publisher",
+    "domain": "example.com"
+  },
+  "sources": [
+    {
+      "type": "training-data",
+      "description": "GPT-4 with custom fine-tuning"
+    },
+    {
+      "type": "human-input",
+      "description": "Original research and interviews"
+    }
+  ]
+}

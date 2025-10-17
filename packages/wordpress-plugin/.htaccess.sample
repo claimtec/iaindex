@@ -1,0 +1,69 @@
+# IAIndex .htaccess Configuration
+# This file provides sample Apache configuration for serving the IAIndex file
+
+# NOTE: WordPress handles the .well-known redirect via rewrite rules
+# This file is only needed if you experience issues with the built-in redirect
+
+# Option 1: Simple Alias (add to your site's .htaccess)
+# Uncomment the following line and adjust the path:
+# Alias /.well-known/iaindex.json /path/to/wordpress/wp-content/uploads/iaindex/iaindex.json
+
+# Option 2: Rewrite Rule (alternative to alias)
+# Add to your WordPress .htaccess, before the WordPress rewrite rules:
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Serve iaindex.json from uploads directory
+RewriteRule ^\.well-known/iaindex\.json$ wp-content/uploads/iaindex/iaindex.json [L,NC]
+
+# ... rest of WordPress rules below ...
+</IfModule>
+
+# Option 3: Direct File with Headers (if you want to serve from root)
+# Place this in .htaccess if you manually copy the file to /.well-known/
+<Files "iaindex.json">
+    # Allow cross-origin requests
+    Header set Access-Control-Allow-Origin "*"
+
+    # Set correct content type
+    Header set Content-Type "application/json; charset=UTF-8"
+
+    # Cache for 1 hour (adjust as needed)
+    Header set Cache-Control "public, max-age=3600"
+</Files>
+
+# Option 4: Full Configuration with Security
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Ensure HTTPS (optional but recommended)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^\.well-known/iaindex\.json$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Serve the file
+RewriteRule ^\.well-known/iaindex\.json$ wp-content/uploads/iaindex/iaindex.json [L,NC]
+</IfModule>
+
+# Set proper MIME type for JSON files
+<IfModule mod_mime.c>
+    AddType application/json .json
+</IfModule>
+
+# Enable CORS for the index file
+<IfModule mod_headers.c>
+    <FilesMatch "iaindex\.json$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, OPTIONS"
+        Header set Access-Control-Allow-Headers "Content-Type"
+    </FilesMatch>
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "\.(log|ini|conf)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

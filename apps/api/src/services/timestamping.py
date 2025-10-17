@@ -9,7 +9,8 @@ import hashlib
 import json
 import os
 from typing import Dict, Any, List, Optional, Literal
-from datetime import datetime, date
+from datetime import datetime
+import datetime as dt
 from pydantic import BaseModel, Field, HttpUrl
 import httpx
 from enum import Enum
@@ -53,7 +54,7 @@ class BlockchainNetwork(str, Enum):
 class TimestampRequest(BaseModel):
     """Request to create timestamp"""
     merkle_root: str = Field(..., description="Merkle root hash to timestamp")
-    date: date = Field(..., description="Date for this attestation")
+    date: dt.date = Field(..., description="Date for this attestation")
     metadata: Optional[Dict[str, Any]] = Field(
         default=None,
         description="Additional metadata"
@@ -67,7 +68,7 @@ class TimestampRequest(BaseModel):
 class TimestampProof(BaseModel):
     """Proof of timestamp"""
     merkle_root: str
-    date: date
+    date: dt.date
     blockchain: str
     tx_id: Optional[str] = None
     block_height: Optional[int] = None
@@ -106,7 +107,7 @@ class AttestationResponse(BaseModel):
 class VerifyProofRequest(BaseModel):
     """Request to verify timestamp proof"""
     merkle_root: str
-    date: date
+    date: dt.date
     tx_id: Optional[str] = None
     ots_proof: Optional[str] = None
 
@@ -173,7 +174,7 @@ class TimestampingService:
         """
         return hashlib.sha256(data.encode('utf-8')).digest()
 
-    def _format_date_key(self, date_obj: date) -> str:
+    def _format_date_key(self, date_obj: dt.date) -> str:
         """
         Format date as key
 
@@ -543,8 +544,8 @@ class TimestampingService:
 
     async def get_daily_attestations(
         self,
-        start_date: date,
-        end_date: date
+        start_date: dt.date,
+        end_date: dt.date
     ) -> List[AttestationResponse]:
         """
         Get all attestations in date range

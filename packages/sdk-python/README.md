@@ -1,9 +1,13 @@
-# AIIndex Python SDK
+# IAIndex Python SDK
 
-Python SDK for the [AIIndex Protocol](https://aiindex.org) - Create AI-readable website metadata, manage access control, and handle cryptographic signatures for verifiable AI content indexing.
+Official Python SDK for the [IAIndex Protocol](https://aiindex.org) - enabling publishers and AI clients to interact with the IAIndex API for content verification and usage tracking.
 
 ## Features
 
+- **IAIndexPublisher**: For content publishers to register, add entries, and verify receipts
+- **IAIndexClient**: For AI systems to access content and send usage receipts
+- **ECDSA Cryptography**: Full ECDSA signing and verification using secp256k1
+- **API Integration**: Direct integration with deployed IAIndex API
 - **AIIndexGenerator**: Crawl websites and automatically extract metadata
 - **SignatureManager**: ECDSA (ES256) and RSA (RS256) signature support
 - **ReceiptHandler**: Webhook server for receiving AI access receipts
@@ -15,7 +19,7 @@ Python SDK for the [AIIndex Protocol](https://aiindex.org) - Create AI-readable 
 ## Installation
 
 ```bash
-pip install aiindex-sdk
+pip install iaindex-sdk
 ```
 
 Or install from source:
@@ -26,6 +30,151 @@ pip install -e .
 ```
 
 ## Quick Start
+
+### For Publishers
+
+```python
+from iaindex import IAIndexPublisher, generate_keypair
+import os
+
+# Generate keypair (save these securely!)
+private_key, public_key = generate_keypair()
+
+# Initialize publisher
+publisher = IAIndexPublisher(
+    domain='yourdomain.com',
+    private_key=private_key,
+    name='Your Publication',
+    contact='contact@yourdomain.com'
+)
+
+# Add content entry
+publisher.add_entry({
+    'url': 'https://yourdomain.com/article',
+    'title': 'Article Title',
+    'author': 'Author Name',
+    'published_date': '2025-01-15T10:00:00Z',
+    'license': {'type': 'CC-BY-4.0'}
+})
+
+# Generate signed index
+index = publisher.generate_index()
+print(f"Generated index with {len(index['entries'])} entries")
+```
+
+### For AI Clients
+
+```python
+from iaindex import IAIndexClient, generate_keypair
+
+# Generate keypair for client
+private_key, public_key = generate_keypair()
+
+# Initialize client
+client = IAIndexClient(
+    client_id='your-ai-client-id',
+    private_key=private_key,
+    name='Your AI System',
+    organization='Your Organization'
+)
+
+# Access content
+content = client.access_content('https://example.com/article')
+
+# Send usage receipt
+client.send_receipt(content, {
+    'purpose': 'training',
+    'context': 'language-model-pretraining'
+})
+```
+
+## API Reference
+
+### IAIndexPublisher
+
+```python
+from iaindex import IAIndexPublisher
+
+publisher = IAIndexPublisher(
+    domain='example.com',
+    private_key='base64-encoded-private-key',
+    name='Publisher Name',
+    contact='contact@example.com'
+)
+
+# Initialize publisher profile
+result = publisher.initialize()
+
+# Add content entries
+entry_id = publisher.add_entry({
+    'url': 'https://example.com/article',
+    'title': 'Article Title',
+    'author': 'Author Name',
+    'published_date': '2025-01-15T10:00:00Z',
+    'license': {'type': 'CC-BY-4.0'}
+})
+
+# Generate signed index
+index = publisher.generate_index()
+
+# Verify receipt from AI client
+is_valid = publisher.verify_receipt(receipt)
+
+# Get receipts for this publisher
+receipts = publisher.get_receipts(limit=50)
+```
+
+### IAIndexClient
+
+```python
+from iaindex import IAIndexClient
+
+client = IAIndexClient(
+    client_id='my-ai-client',
+    private_key='base64-encoded-private-key',
+    name='My AI System',
+    organization='My Company'
+)
+
+# Access content and get metadata
+content = client.access_content('https://example.com/article')
+
+# Send usage receipt
+success = client.send_receipt(content, {
+    'purpose': 'training',
+    'context': 'language-model-pretraining',
+    'model': 'gpt-4',
+    'tokens': 1000
+})
+
+# Check if publisher is verified
+verification = client.verify_publisher('example.com')
+```
+
+### Cryptographic Utilities
+
+```python
+from aiindex import generate_keypair, CryptoUtils
+
+# Generate a new ECDSA keypair
+private_key, public_key = generate_keypair()
+
+# Sign data
+data = {'message': 'Hello, World!'}
+signature = CryptoUtils.sign_data(data, private_key)
+
+# Verify signature
+is_valid = CryptoUtils.verify_signature(data, signature, public_key)
+
+# Hash data
+data_hash = CryptoUtils.hash_data(data)
+```
+
+## Complete Example
+
+See the documentation for a complete example matching the quickstart guide.
+
+## Original SDK Features (Still Available)
 
 ### 1. Generate an AI-index.json file
 

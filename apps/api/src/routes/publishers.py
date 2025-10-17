@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from supabase import Client
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 from typing import List
 
@@ -57,7 +57,7 @@ async def initiate_verification(
             "domain", domain
         ).execute()
 
-        if existing.data and existing.data[0].get("verified"):
+        if existing.data and existing.data[0].get("domain_verified"):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Domain is already verified"
@@ -79,10 +79,7 @@ async def initiate_verification(
             "domain": domain,
             "verification_token": token,
             "verification_method": verify_request.method.value,
-            "contact_email": verify_request.contact_email,
-            "status": VerificationStatus.PENDING.value,
-            "verified": False,
-            "expires_at": expires_at.isoformat(),
+            "domain_verified": False,
             "created_at": datetime.utcnow().isoformat(),
             "updated_at": datetime.utcnow().isoformat()
         }
@@ -147,20 +144,22 @@ async def check_verification(
         domain = publisher_data["domain"]
 
         # Check if already verified
-        if publisher_data.get("verified"):
+        if publisher_data.get("domain_verified"):
             return VerificationCheckResponse(
                 domain=domain,
                 status=VerificationStatus.VERIFIED,
                 verified=True,
-                verified_at=datetime.fromisoformat(publisher_data["verified_at"]),
+                verified_at=datetime.fromisoformat(publisher_data["updated_at"]),
                 message="Domain is already verified"
             )
 
-        # Check if expired
-        expires_at = datetime.fromisoformat(publisher_data["expires_at"])
+        # Check if expired (calculate from created_at + expiry hours)
+        created_at = datetime.fromisoformat(publisher_data["created_at"])
+        expiry_hours = settings.verification_token_expiry_hours
+        expires_at = created_at.replace(tzinfo=None) + timedelta(hours=expiry_hours)
+
         if datetime.utcnow() > expires_at:
             supabase.table("publishers").update({
-                "status": VerificationStatus.EXPIRED.value,
                 "updated_at": datetime.utcnow().isoformat()
             }).eq("domain", domain).execute()
 
@@ -186,9 +185,7 @@ async def check_verification(
         # Update status
         if verified:
             supabase.table("publishers").update({
-                "verified": True,
-                "verified_at": datetime.utcnow().isoformat(),
-                "status": VerificationStatus.VERIFIED.value,
+                "domain_verified": True,
                 "updated_at": datetime.utcnow().isoformat()
             }).eq("domain", domain).execute()
 
@@ -203,7 +200,6 @@ async def check_verification(
             )
         else:
             supabase.table("publishers").update({
-                "status": VerificationStatus.PENDING.value,
                 "updated_at": datetime.utcnow().isoformat()
             }).eq("domain", domain).execute()
 
@@ -240,8 +236,8 @@ async def get_verified_domains(
     try:
         # Get all verified publishers
         publishers_query = supabase.table("publishers").select("*").eq(
-            "verified", True
-        ).order("verified_at", desc=True).execute()
+            "domain_verified", True
+        ).order("updated_at", desc=True).execute()
 
         verified_publishers = []
 
@@ -264,7 +260,7 @@ async def get_verified_domains(
             verified_publishers.append(
                 VerifiedPublisher(
                     domain=domain,
-                    verified_at=datetime.fromisoformat(publisher["verified_at"]),
+                    verified_at=datetime.fromisoformat(publisher["updated_at"]),
                     receipt_count=receipt_count,
                     last_receipt_at=last_receipt
                 )

@@ -1,0 +1,38 @@
+{
+  "name": "iaindex-cli",
+  "version": "1.0.0",
+  "description": "IAIndex CLI - Command line tool for managing AI Index attestations",
+  "main": "dist/index.js",
+  "bin": {
+    "iaindex": "./bin/iaindex.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepare": "npm run build",
+    "test": "node bin/iaindex.js --help"
+  },
+  "keywords": [
+    "iaindex",
+    "ai-attestation",
+    "cli",
+    "verification"
+  ],
+  "author": "ClaimTec",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "inquirer": "^8.2.6",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,276 @@
+/**
+ * IAIndex Admin Styles
+ */
+
+.iaindex-settings .iaindex-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+    .iaindex-settings .iaindex-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.iaindex-settings .card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.iaindex-settings .card h2,
+.iaindex-settings .card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+}
+
+.iaindex-settings .card h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.iaindex-settings .card ul {
+    margin-left: 20px;
+}
+
+.iaindex-settings .card ul li {
+    margin-bottom: 8px;
+}
+
+/* Status Indicators */
+.iaindex-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.iaindex-status-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.iaindex-status-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.iaindex-status-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Verification Status */
+.iaindex-verification-status .notice {
+    margin: 0 0 16px 0;
+}
+
+.iaindex-verification-status .notice p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+#iaindex-verification-result,
+#iaindex-generation-result {
+    margin-top: 16px;
+}
+
+#iaindex-verification-result .notice,
+#iaindex-generation-result .notice {
+    padding: 12px;
+    margin: 0;
+}
+
+/* Spinner */
+button .spinner {
+    visibility: hidden;
+}
+
+button.loading .spinner {
+    visibility: visible;
+}
+
+/* Code blocks */
+code {
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+/* Buttons */
+.button-small {
+    height: auto;
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Form table improvements */
+.form-table th {
+    font-weight: 600;
+}
+
+.form-table .description {
+    color: #666;
+    font-size: 13px;
+}
+
+/* Sidebar */
+.iaindex-sidebar .card {
+    background: #f8f9fa;
+}
+
+.iaindex-sidebar .card p:last-child {
+    margin-bottom: 0;
+}
+
+/* Dashboard Widget Styles */
+.iaindex-dashboard-widget {
+    font-size: 13px;
+}
+
+.iaindex-dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.iaindex-stat-box {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    gap: 12px;
+}
+
+.iaindex-stat-icon .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+.iaindex-stat-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.iaindex-stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.iaindex-dashboard-info {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #e8f4f8;
+    border-left: 3px solid #0073aa;
+    border-radius: 3px;
+}
+
+.iaindex-dashboard-info p {
+    margin: 0;
+}
+
+.iaindex-dashboard-alert {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #fff8e5;
+    border-left: 3px solid #ffb900;
+    border-radius: 3px;
+}
+
+.iaindex-dashboard-alert p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.iaindex-dashboard-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Receipts list table */
+.wp-list-table .column-content_url {
+    width: 35%;
+}
+
+.wp-list-table .column-provider {
+    width: 15%;
+}
+
+.wp-list-table .column-timestamp {
+    width: 25%;
+}
+
+.wp-list-table .column-date {
+    width: 15%;
+}
+
+/* Loading states */
+.iaindex-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Success/Error messages */
+.iaindex-message {
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.iaindex-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.iaindex-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.iaindex-message .dashicons {
+    flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .iaindex-dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .iaindex-dashboard-actions {
+        flex-direction: column;
+    }
+
+    .iaindex-dashboard-actions .button {
+        width: 100%;
+        text-align: center;
+    }
+}
