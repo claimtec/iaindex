@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Weekly AI Visibility Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        h1 {
+            color: #1e40af;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .date-range {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .website-card {
+            background-color: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .website-url {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+        .stats-grid {
+            display: table;
+            width: 100%;
+            margin: 15px 0;
+        }
+        .stat-item {
+            display: table-cell;
+            text-align: center;
+            padding: 10px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        .trend {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .trend-up {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        .trend-down {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        .trend-neutral {
+            background-color: #e5e7eb;
+            color: #6b7280;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px 5px;
+            font-weight: 600;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+        .insight {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .recommendation {
+            background-color: #f0f9ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #0ea5e9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">IAIndex</div>
+        </div>
+
+        <h1>Your Weekly Visibility Report</h1>
+        <div class="date-range">Week of {{ week_start }} - {{ week_end }}</div>
+
+        <div class="summary-box">
+            <div style="font-size: 18px; margin-bottom: 10px;">Overall Performance</div>
+            <div style="font-size: 48px; font-weight: bold; margin: 15px 0;">{{ total_websites }}</div>
+            <div style="font-size: 14px;">Websites Monitored</div>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Website Performance</h2>
+
+        {% for website in websites %}
+        <div class="website-card">
+            <div class="website-url">{{ website.url }}</div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">{{ website.visibility_score }}</div>
+                    <div class="stat-label">Visibility Score</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ website.mentions }}</div>
+                    <div class="stat-label">AI Mentions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ website.queries }}</div>
+                    <div class="stat-label">Queries</div>
+                </div>
+            </div>
+
+            {% if website.change != 0 %}
+            <div style="margin-top: 15px;">
+                <span class="trend {{ 'trend-up' if website.change > 0 else 'trend-down' }}">
+                    {{ '▲' if website.change > 0 else '▼' }} {{ website.change }}% this week
+                </span>
+            </div>
+            {% else %}
+            <div style="margin-top: 15px;">
+                <span class="trend trend-neutral">— No change this week</span>
+            </div>
+            {% endif %}
+
+            {% if website.top_recommendation %}
+            <div class="recommendation">
+                <strong>Top Recommendation:</strong><br>
+                {{ website.top_recommendation }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Key Insights</h2>
+
+        <div class="insight">
+            <strong>This Week's Highlight:</strong><br>
+            {% if best_performer %}
+            Your website <strong>{{ best_performer.url }}</strong> showed the best performance with a visibility score of {{ best_performer.score }}/100!
+            {% else %}
+            Keep monitoring your websites to see which ones perform best this week.
+            {% endif %}
+        </div>
+
+        {% if needs_attention %}
+        <div class="insight" style="background-color: #fee2e2; border-left-color: #dc2626;">
+            <strong>Needs Attention:</strong><br>
+            {{ needs_attention.url }} has seen a {{ needs_attention.decline }}% decrease in visibility. Review your content and schema markup.
+        </div>
+        {% endif %}
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Recommended Actions</h2>
+
+        <ul>
+            <li><strong>Update your schema markup</strong> - Ensure all pages have current structured data</li>
+            <li><strong>Publish fresh content</strong> - AI engines prioritize recent, authoritative content</li>
+            <li><strong>Monitor competitors</strong> - See how your visibility compares to industry peers</li>
+            <li><strong>Review recommendations</strong> - Implement personalized optimization tips</li>
+        </ul>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ dashboard_url }}" class="button">View Full Dashboard</a>
+            <a href="{{ dashboard_url }}/websites" class="button" style="background-color: #6b7280;">Manage Websites</a>
+        </div>
+
+        <div style="background-color: #f9fafb; padding: 20px; margin: 30px 0; border-radius: 6px; text-align: center;">
+            <p style="margin: 0 0 10px 0;"><strong>Want more detailed insights?</strong></p>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                Upgrade to Pro for real-time monitoring, advanced analytics, and API access.
+            </p>
+            <a href="{{ dashboard_url }}/billing/upgrade" style="color: #2563eb; text-decoration: none; font-weight: 600;">Learn More →</a>
+        </div>
+
+        <div class="footer">
+            <p>You're receiving this weekly report because you have active websites on IAIndex.</p>
+            <p>&copy; 2025 IAIndex. All rights reserved.</p>
+            <p>IAIndex Inc., 123 Tech Street, San Francisco, CA 94102</p>
+            <p>
+                <a href="{{ dashboard_url }}/settings/email-preferences" style="color: #2563eb;">Email Preferences</a> |
+                <a href="{{ unsubscribe_url }}" style="color: #6b7280;">Unsubscribe</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

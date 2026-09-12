@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/_next/*", "/static/*", "/api/*"]
+    "exclude": ["/_next/*", "/static/*", "/api/*", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.gif", "/*.svg", "/*.ico"]
   },
   "platform": {
     "apiRuntime": "node:18"
@@ -14,8 +14,8 @@
   ],
   "responseOverrides": {
     "404": {
-      "rewrite": "/404.html",
-      "statusCode": 404
+      "rewrite": "/index.html",
+      "statusCode": 200
     }
   }
 }

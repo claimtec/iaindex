@@ -15,13 +15,13 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://docs.iaindex.com',
+  url: 'https://docs.iaindex.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
-  organizationName: 'claimtec', // Usually your GitHub org/user name.
+  organizationName: 'dineshanchetty', // Usually your GitHub org/user name.
   projectName: 'iaindex', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -43,7 +43,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/claimtec/iaindex/tree/main/apps/docs/',
+          editUrl: 'https://github.com/dineshanchetty/iaindex/tree/main/docs/',
           routeBasePath: 'docs',
           showLastUpdateAuthor: false,
           showLastUpdateTime: false,
@@ -60,7 +60,7 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          editUrl: 'https://github.com/claimtec/iaindex/tree/main/apps/docs/',
+          editUrl: 'https://github.com/dineshanchetty/iaindex/tree/main/docs/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -83,7 +83,7 @@ const config: Config = {
     metadata: [
       {name: 'keywords', content: 'AI, attribution, training data, transparency, protocol, receipts'},
       {name: 'description', content: 'IAIndex is a transparent AI training attribution protocol that enables content creators to track and verify AI usage of their content.'},
-      {property: 'og:image', content: 'https://docs.iaindex.com/img/iaindex-social-card.jpg'},
+      {property: 'og:image', content: 'https://docs.iaindex.org/img/iaindex-social-card.jpg'},
       {property: 'og:type', content: 'website'},
       {name: 'twitter:card', content: 'summary_large_image'},
     ],
@@ -130,7 +130,7 @@ const config: Config = {
           dropdownActiveClassDisabled: true,
         },
         {
-          href: 'https://github.com/claimtec/iaindex',
+          href: 'https://github.com/dineshanchetty/iaindex',
           label: 'GitHub',
           position: 'right',
         },
@@ -182,7 +182,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/claimtec/iaindex',
+              href: 'https://github.com/dineshanchetty/iaindex',
             },
             {
               label: 'Discord',
@@ -235,7 +235,7 @@ const config: Config = {
     announcementBar: {
       id: 'support_us',
       content:
-        '⭐️ If you like IAIndex, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/claimtec/iaindex">GitHub</a>',
+        '⭐️ If you like IAIndex, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/dineshanchetty/iaindex">GitHub</a>',
       backgroundColor: '#fafbfc',
       textColor: '#091E42',
       isCloseable: true,

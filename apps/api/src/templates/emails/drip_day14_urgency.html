@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Competitors Are Pulling Ahead</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        h1 {
+            color: #dc2626;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .warning-box {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .comparison-grid {
+            display: table;
+            width: 100%;
+            margin: 25px 0;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .comparison-row {
+            display: table-row;
+        }
+        .comparison-cell {
+            display: table-cell;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        .comparison-header {
+            background-color: #1e40af;
+            color: white;
+            font-weight: 600;
+        }
+        .stat-large {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-your {
+            color: #dc2626;
+        }
+        .stat-competitor {
+            color: #059669;
+        }
+        .button {
+            display: inline-block;
+            padding: 16px 40px;
+            background-color: #dc2626;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .timeline {
+            background-color: #fef3c7;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .timeline-item {
+            margin: 15px 0;
+        }
+        .insight-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+        .guarantee-badge {
+            background-color: #d1fae5;
+            border: 2px solid #10b981;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">IAIndex</div>
+        </div>
+
+        <h1>Your Competitors Are Pulling Ahead</h1>
+
+        <p>Hi {{ user_name }},</p>
+
+        <p>Two weeks ago, you discovered that <strong>{{ website_url }}</strong> has a visibility score of {{ visibility_score }}/100.</p>
+
+        <div class="warning-box">
+            <strong>Here's what happened in those 14 days:</strong><br>
+            <p style="margin-top: 10px;">While you've been waiting, your competitors have been optimizing. The gap is widening.</p>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">The Reality Check</h2>
+
+        <p>We analyzed {{ competitor_count }} websites in your industry. Here's what we found:</p>
+
+        <div class="comparison-grid">
+            <div class="comparison-row">
+                <div class="comparison-cell comparison-header">Metric</div>
+                <div class="comparison-cell comparison-header">Your Site</div>
+                <div class="comparison-cell comparison-header">Top Competitors</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-cell" style="font-weight: 600;">Visibility Score</div>
+                <div class="comparison-cell">
+                    <div class="stat-large stat-your">{{ visibility_score }}</div>
+                </div>
+                <div class="comparison-cell">
+                    <div class="stat-large stat-competitor">{{ competitor_avg_score }}</div>
+                </div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-cell" style="font-weight: 600;">AI Mentions</div>
+                <div class="comparison-cell">
+                    <div style="font-size: 24px; font-weight: bold; color: #dc2626;">{{ your_mentions }}</div>
+                </div>
+                <div class="comparison-cell">
+                    <div style="font-size: 24px; font-weight: bold; color: #059669;">{{ competitor_mentions }}</div>
+                </div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-cell" style="font-weight: 600; border-bottom: none;">Schema Markup</div>
+                <div class="comparison-cell" style="border-bottom: none;">
+                    <div style="font-size: 24px; color: #dc2626;">✗ None</div>
+                </div>
+                <div class="comparison-cell" style="border-bottom: none;">
+                    <div style="font-size: 24px; color: #059669;">✓ Active</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="text-align: center; font-size: 18px; color: #dc2626; font-weight: 600; margin: 25px 0;">
+            You're being outranked by {{ outranked_percentage }}% in your category.
+        </p>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 35px;">What Happens If You Wait Another 14 Days?</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <strong>Today:</strong> {{ visibility_score }}/100 visibility score
+            </div>
+            <div class="timeline-item">
+                <strong>In 14 days:</strong> Competitors improve by ~15 points while you stay the same
+            </div>
+            <div class="timeline-item">
+                <strong>In 30 days:</strong> You drop further in AI rankings, losing even more potential traffic
+            </div>
+            <div class="timeline-item">
+                <strong>In 90 days:</strong> The gap becomes nearly impossible to close
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <strong>Industry Insight:</strong> AI visibility compounds over time. Sites that start optimizing today see 3x better results than those who wait 3 months. The cost of delay is exponential.
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 35px;">Here's What You Need to Do</h2>
+
+        <p>Stop letting competitors steal your AI traffic. Here's your action plan:</p>
+
+        <ol>
+            <li><strong>Start today</strong> - Every day matters in this race</li>
+            <li><strong>Implement schema markup</strong> - Get a 20-30 point boost in weeks</li>
+            <li><strong>Monitor progress</strong> - Track improvements and stay ahead</li>
+            <li><strong>Iterate and optimize</strong> - Continuous improvement wins</li>
+        </ol>
+
+        <div style="text-align: center; margin: 35px 0;">
+            <a href="{{ dashboard_url }}/signup" class="button">Start Catching Up Today</a>
+        </div>
+
+        <div class="guarantee-badge">
+            <div style="font-size: 20px; font-weight: bold; color: #059669; margin-bottom: 10px;">
+                30-Day Money-Back Guarantee
+            </div>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                See measurable improvement in 30 days or get a full refund.
+            </p>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 35px;">Real Results from Our Customers</h2>
+
+        <div style="background-color: #f9fafb; padding: 20px; margin: 20px 0; border-radius: 8px;">
+            <p style="font-style: italic; margin: 0 0 15px 0;">
+                "We started 30 points behind our main competitor. After 60 days with IAIndex, we're now 15 points ahead. The difference in qualified leads has been incredible."
+            </p>
+            <div style="font-weight: 600; color: #1e40af;">- Michael R., SaaS Founder</div>
+        </div>
+
+        <div style="background-color: #f9fafb; padding: 20px; margin: 20px 0; border-radius: 8px;">
+            <p style="font-style: italic; margin: 0 0 15px 0;">
+                "I wish I had started sooner. My competitors were getting all the AI-driven traffic. Now we're competitive again and our organic reach has tripled."
+            </p>
+            <div style="font-weight: 600; color: #1e40af;">- Jessica T., Marketing Director</div>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 35px;">The Choice Is Yours</h2>
+
+        <p>You have two options:</p>
+
+        <div style="background-color: #fee2e2; padding: 20px; margin: 15px 0; border-radius: 6px;">
+            <strong>Option 1: Wait and fall further behind</strong><br>
+            <span style="font-size: 14px; color: #6b7280;">Watch competitors dominate AI search while you lose market share</span>
+        </div>
+
+        <div style="background-color: #d1fae5; padding: 20px; margin: 15px 0; border-radius: 6px;">
+            <strong>Option 2: Take action today</strong><br>
+            <span style="font-size: 14px; color: #6b7280;">Start optimizing and reclaim your competitive position</span>
+        </div>
+
+        <div style="text-align: center; margin: 35px 0;">
+            <a href="{{ dashboard_url }}/signup" class="button" style="font-size: 18px; padding: 18px 45px;">
+                I'm Ready to Compete
+            </a>
+        </div>
+
+        <p style="text-align: center; font-size: 14px; color: #6b7280; margin-top: 30px;">
+            Still have questions? <a href="mailto:support@iaindex.org" style="color: #2563eb;">Email us</a> or
+            <a href="{{ dashboard_url }}/book-call" style="color: #2563eb;">schedule a call</a> with our team.
+        </p>
+
+        <div style="background-color: #f0f9ff; padding: 25px; margin: 30px 0; border-radius: 8px; text-align: center;">
+            <p style="margin: 0 0 15px 0; font-size: 16px;"><strong>Last Chance Special</strong></p>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                This is our final email in this series. Sign up within 48 hours and use code <strong>FINAL20</strong> for 20% off your first 3 months.
+            </p>
+        </div>
+
+        <p>Don't let another day go by.</p>
+
+        <p>To your success,<br>
+        <strong>The IAIndex Team</strong></p>
+
+        <div class="footer">
+            <p>This is the final email in our visibility optimization series.</p>
+            <p>&copy; 2025 IAIndex. All rights reserved.</p>
+            <p><a href="{{ unsubscribe_url }}" style="color: #6b7280;">Unsubscribe</a></p>
+        </div>
+    </div>
+</body>
+</html>

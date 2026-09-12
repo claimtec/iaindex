@@ -12,7 +12,10 @@ from datetime import datetime
 from contextlib import asynccontextmanager
 
 from .config import settings
-from .routes import receipts, analytics, publishers, attestations
+from .routes import receipts, analytics, publishers, attestations, schema, visibility, subscriptions, auth, users, reports, websites
+from .middleware.security_headers import SecurityHeadersMiddleware
+from .middleware.csrf_protection import CSRFProtectionMiddleware
+from .middleware.abuse_detection import AbuseDetectionMiddleware
 
 # Configure logging
 logging.basicConfig(
@@ -60,6 +63,7 @@ app = FastAPI(
 
     Use `/v1/auth/login` to obtain a JWT token.
     """,
+    # Enable interactive docs (v2.3.0: Always enabled for easier API discovery)
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
@@ -70,6 +74,41 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# Add abuse detection middleware (CRITICAL: Must be first to block malicious IPs early)
+# TEMPORARILY DISABLED FOR TESTING - Re-enable after deployment verification
+# app.add_middleware(
+#     AbuseDetectionMiddleware,
+#     max_violations=10,
+#     violation_window_minutes=60,
+#     block_duration_minutes=60,
+#     permanent_block_threshold=50
+# )
+
+# Add security headers middleware (CRITICAL: Must be added before CORS)
+app.add_middleware(
+    SecurityHeadersMiddleware,
+    enable_hsts=not settings.debug,  # Disable HSTS in development
+    hsts_max_age=31536000  # 1 year
+)
+
+# Add CSRF protection middleware
+app.add_middleware(
+    CSRFProtectionMiddleware,
+    secret_key=settings.secret_key,
+    cookie_secure=not settings.debug,  # Disable secure cookie in development
+    exempt_paths=[
+        "/health",
+        "/docs",
+        "/redoc",
+        "/openapi.json",
+        "/v1/auth/login",
+        "/v1/auth/register",
+        "/v1/verified-domains",
+        "/v1/websites",
+        "/"
+    ]
+)
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -77,7 +116,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"]
+    expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset", "X-CSRF-Token"]
 )
 
 
@@ -168,33 +207,21 @@ async def root():
 
 # Authentication endpoint
 @app.post("/v1/auth/login", tags=["authentication"])
-@limiter.limit(settings.rate_limit_per_minute)
+@limiter.limit("5/minute")  # Stricter rate limiting for login attempts
 async def login(request: Request, username: str, password: str):
     """
     Login endpoint for API key authentication
 
     Returns a JWT token for authenticated access to protected endpoints.
 
-    Note: This is a placeholder implementation. In production, implement
-    proper user authentication with password hashing and database lookup.
+    SECURITY: This endpoint is disabled in production. Use proper authentication
+    service with Supabase Auth or implement secure user authentication with
+    password hashing (bcrypt/argon2) and database lookup.
     """
-    from .middleware.auth import AuthService
-
-    # TODO: Implement proper authentication
-    # This is a placeholder - implement database lookup and password verification
-    if username == "admin" and password == "changeme":
-        token = AuthService.create_access_token(
-            data={"sub": username, "type": "user"}
-        )
-        return {
-            "access_token": token,
-            "token_type": "bearer",
-            "expires_in": settings.access_token_expire_minutes * 60
-        }
-
+    # SECURITY FIX: Disabled hardcoded credentials
     raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid credentials"
+        status_code=status.HTTP_501_NOT_IMPLEMENTED,
+        detail="Authentication endpoint not implemented. Use Supabase Auth or implement proper user authentication with database lookup and password hashing."
     )
 
 
@@ -218,6 +245,13 @@ app.include_router(receipts.router)
 app.include_router(analytics.router)
 app.include_router(publishers.router)
 app.include_router(attestations.router)
+app.include_router(schema.router, prefix="/v1", tags=["schema"])
+app.include_router(visibility.router, prefix="/v1", tags=["visibility"])
+app.include_router(websites.router)
+app.include_router(subscriptions.router, prefix="/api/subscriptions", tags=["subscriptions"])
+app.include_router(auth.router, tags=["authentication"])
+app.include_router(users.router, tags=["users"])
+app.include_router(reports.router, tags=["reports"])
 
 
 # Run with: uvicorn src.main:app --reload --host 0.0.0.0 --port 8000

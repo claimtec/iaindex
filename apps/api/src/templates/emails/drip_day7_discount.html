@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Offer: 20% Off Your First Month</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        h1 {
+            color: #1e40af;
+            font-size: 26px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .offer-banner {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .discount-amount {
+            font-size: 56px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .coupon-code {
+            background-color: white;
+            color: #d97706;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            border: 2px dashed #d97706;
+            display: inline-block;
+        }
+        .timer {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 16px 40px;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .plan-card {
+            background-color: #f9fafb;
+            border: 2px solid #e5e7eb;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .plan-card-featured {
+            border: 3px solid #2563eb;
+            background-color: #f0f9ff;
+            position: relative;
+        }
+        .featured-badge {
+            background-color: #2563eb;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            position: absolute;
+            top: -12px;
+            right: 20px;
+        }
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .price-old {
+            font-size: 24px;
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .checkmark {
+            color: #10b981;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">IAIndex</div>
+        </div>
+
+        <h1>Special Offer: 20% Off First Month</h1>
+
+        <p>Hi {{ user_name }},</p>
+
+        <p>A week ago, you scanned <strong>{{ website_url }}</strong> and got a visibility score of {{ visibility_score }}/100.</p>
+
+        <p>You've been learning about AI visibility optimization - now it's time to take action.</p>
+
+        <div class="offer-banner">
+            <div style="font-size: 20px; margin-bottom: 10px;">Limited Time Offer</div>
+            <div class="discount-amount">20% OFF</div>
+            <div style="font-size: 18px; margin-bottom: 20px;">Your First Month</div>
+            <div class="coupon-code">BOOST20</div>
+            <div style="font-size: 14px; margin-top: 15px; opacity: 0.9;">Use code at checkout</div>
+        </div>
+
+        <div class="timer">
+            <strong>Hurry! Offer expires in 48 hours</strong><br>
+            <span style="font-size: 14px; color: #6b7280;">Expires {{ expiry_date }}</span>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 20px; margin-top: 35px; text-align: center;">Choose Your Plan</h2>
+
+        <div class="plan-card">
+            <h3 style="color: #1e40af; margin-top: 0;">Starter</h3>
+            <div>
+                <span class="price-old">$29</span>
+                <span class="price">$23.20/mo</span>
+            </div>
+            <p style="color: #6b7280; font-size: 14px;">Perfect for single websites</p>
+            <ul>
+                <li><span class="checkmark">✓</span> 1 website</li>
+                <li><span class="checkmark">✓</span> Weekly visibility checks</li>
+                <li><span class="checkmark">✓</span> Automated schema generation</li>
+                <li><span class="checkmark">✓</span> Basic reports</li>
+                <li><span class="checkmark">✓</span> Email support</li>
+            </ul>
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}/signup?plan=starter&coupon=BOOST20" class="button" style="background-color: #6b7280;">Get Starter</a>
+            </div>
+        </div>
+
+        <div class="plan-card plan-card-featured">
+            <div class="featured-badge">MOST POPULAR</div>
+            <h3 style="color: #1e40af; margin-top: 0;">Professional</h3>
+            <div>
+                <span class="price-old">$79</span>
+                <span class="price">$63.20/mo</span>
+            </div>
+            <p style="color: #6b7280; font-size: 14px;">For growing businesses</p>
+            <ul>
+                <li><span class="checkmark">✓</span> 5 websites</li>
+                <li><span class="checkmark">✓</span> <strong>Daily</strong> visibility checks</li>
+                <li><span class="checkmark">✓</span> Advanced analytics</li>
+                <li><span class="checkmark">✓</span> API access</li>
+                <li><span class="checkmark">✓</span> Priority support</li>
+                <li><span class="checkmark">✓</span> Competitor tracking</li>
+                <li><span class="checkmark">✓</span> Custom recommendations</li>
+            </ul>
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}/signup?plan=professional&coupon=BOOST20" class="button">Get Professional</a>
+            </div>
+        </div>
+
+        <div class="plan-card">
+            <h3 style="color: #1e40af; margin-top: 0;">Agency</h3>
+            <div>
+                <span class="price-old">$199</span>
+                <span class="price">$159.20/mo</span>
+            </div>
+            <p style="color: #6b7280; font-size: 14px;">For agencies and enterprises</p>
+            <ul>
+                <li><span class="checkmark">✓</span> 50 websites</li>
+                <li><span class="checkmark">✓</span> Real-time monitoring</li>
+                <li><span class="checkmark">✓</span> White-label reports</li>
+                <li><span class="checkmark">✓</span> Client portals</li>
+                <li><span class="checkmark">✓</span> Dedicated support</li>
+                <li><span class="checkmark">✓</span> Custom integrations</li>
+                <li><span class="checkmark">✓</span> Onboarding consultation</li>
+            </ul>
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}/signup?plan=agency&coupon=BOOST20" class="button" style="background-color: #6b7280;">Get Agency</a>
+            </div>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 35px;">Why Upgrade Now?</h2>
+
+        <div style="background-color: #f0f9ff; padding: 25px; margin: 20px 0; border-radius: 8px;">
+            <p style="margin-top: 0;"><strong>Every day you wait, you're losing ground to competitors.</strong></p>
+            <ul style="margin-bottom: 0;">
+                <li>AI search is growing 200% year-over-year</li>
+                <li>Early adopters are seeing 10x the visibility of late movers</li>
+                <li>The optimization gap is widening every week</li>
+            </ul>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 35px;">What You Get Immediately</h2>
+
+        <ol>
+            <li><strong>Automated monitoring</strong> - We check your visibility daily/weekly</li>
+            <li><strong>Instant schema generation</strong> - AI-optimized structured data in seconds</li>
+            <li><strong>Actionable recommendations</strong> - Know exactly what to fix</li>
+            <li><strong>Progress tracking</strong> - See improvements over time</li>
+        </ol>
+
+        <div style="background-color: #fef3c7; padding: 20px; margin: 30px 0; border-radius: 6px; text-align: center;">
+            <p style="margin: 0 0 10px 0; font-size: 16px;"><strong>100% Money-Back Guarantee</strong></p>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                Not satisfied? Get a full refund within 30 days, no questions asked.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin: 35px 0;">
+            <a href="{{ dashboard_url }}/signup?coupon=BOOST20" class="button" style="font-size: 18px; padding: 18px 45px;">Claim Your 20% Discount</a>
+        </div>
+
+        <p style="text-align: center; font-size: 14px; color: #6b7280;">
+            Questions? <a href="mailto:sales@iaindex.org" style="color: #2563eb;">Contact our team</a> or
+            <a href="{{ dashboard_url }}/book-demo" style="color: #2563eb;">book a demo</a>
+        </p>
+
+        <div class="footer">
+            <p>Offer code: BOOST20 | Valid until {{ expiry_date }}</p>
+            <p>&copy; 2025 IAIndex. All rights reserved.</p>
+            <p><a href="{{ unsubscribe_url }}" style="color: #6b7280;">Unsubscribe</a></p>
+        </div>
+    </div>
+</body>
+</html>

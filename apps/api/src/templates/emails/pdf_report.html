@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your AI Visibility Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        h1 {
+            color: #1e40af;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .score-box {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">IAIndex</div>
+        </div>
+
+        <h1>Your AI Visibility Report is Ready</h1>
+
+        <p>We've completed the analysis for <strong>{{ website_url }}</strong>.</p>
+
+        <div class="score-box">
+            <div style="font-size: 18px; margin-bottom: 10px;">Your Visibility Score</div>
+            <div class="score">{{ visibility_score }}/100</div>
+        </div>
+
+        <p>Your comprehensive PDF report includes:</p>
+
+        <ul>
+            <li>Detailed visibility score analysis</li>
+            <li>AI search engine mentions</li>
+            <li>Optimization recommendations</li>
+            <li>Actionable next steps</li>
+        </ul>
+
+        <div style="text-align: center;">
+            <a href="{{ report_url }}" class="button">Download Report (PDF)</a>
+        </div>
+
+        <p style="margin-top: 30px;">Review the recommendations in your report and implement them to improve your AI visibility.</p>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{{ dashboard_url }}" style="color: #2563eb;">View in Dashboard</a>
+        </div>
+
+        <div class="footer">
+            <p>This report was generated for your website analysis request.</p>
+            <p>&copy; 2025 IAIndex. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to IAIndex</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        h1 {
+            color: #1e40af;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">IAIndex</div>
+        </div>
+
+        <h1>Welcome to IAIndex, {{ user_name }}!</h1>
+
+        <p>Thank you for joining IAIndex - the AI visibility optimization platform.</p>
+
+        <p>We're excited to help you improve your website's discoverability in AI search engines and large language models.</p>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Getting Started</h2>
+
+        <ol>
+            <li><strong>Add your website</strong> - Register your website URL in the dashboard</li>
+            <li><strong>Generate schema markup</strong> - Get AI-optimized structured data</li>
+            <li><strong>Check visibility</strong> - See how AI engines discover your content</li>
+            <li><strong>Get recommendations</strong> - Receive actionable optimization tips</li>
+        </ol>
+
+        <div style="text-align: center;">
+            <a href="{{ dashboard_url }}" class="button">Go to Dashboard</a>
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Need Help?</h2>
+
+        <p>Our support team is here to help. Email us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+
+        <div class="footer">
+            <p>You're receiving this email because you created an account on IAIndex.</p>
+            <p>&copy; 2025 IAIndex. All rights reserved.</p>
+            <p><a href="{{ dashboard_url }}/settings">Manage Email Preferences</a></p>
+        </div>
+    </div>
+</body>
+</html>

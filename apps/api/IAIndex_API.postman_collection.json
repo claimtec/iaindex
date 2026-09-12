@@ -1,0 +1,470 @@
+{
+  "info": {
+    "name": "IAIndex API v1.0",
+    "description": "Complete IAIndex API collection with all endpoints for authentication, user management, schema generation, visibility checking, and reports.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.iaindex.org",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123\",\n  \"full_name\": \"John Doe\",\n  \"company\": \"Example Inc\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auth", "register"]
+            },
+            "description": "Register a new user account"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auth", "login"]
+            },
+            "description": "Login and get access token"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set(\"access_token\", jsonData.access_token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auth", "me"]
+            },
+            "description": "Get current user profile"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"John Smith\",\n  \"company\": \"New Company Inc\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/auth/update",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auth", "update"]
+            },
+            "description": "Update user profile"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"your-refresh-token\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auth", "refresh"]
+            },
+            "description": "Refresh access token"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/v1/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auth", "logout"]
+            },
+            "description": "Logout user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get User Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get User Websites",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/users/me/websites?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "users", "me", "websites"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Usage Statistics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/users/me/usage",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "users", "me", "usage"]
+            }
+          }
+        },
+        {
+          "name": "Create API Key",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Production API Key\",\n  \"scopes\": [\"read\", \"write\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/users/me/api-keys",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "users", "me", "api-keys"]
+            }
+          }
+        },
+        {
+          "name": "List API Keys",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/users/me/api-keys",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "users", "me", "api-keys"]
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/v1/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "users", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schema Generation",
+      "item": [
+        {
+          "name": "Generate Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com\",\n  \"business_type\": \"Organization\",\n  \"business_name\": \"Example Inc\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/schema/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "schema", "generate"]
+            }
+          }
+        },
+        {
+          "name": "Validate Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schema_markup\": {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Organization\",\n    \"name\": \"Example\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/schema/validate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "schema", "validate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Visibility Checking",
+      "item": [
+        {
+          "name": "Check Visibility",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com\",\n  \"keywords\": [\"keyword1\", \"keyword2\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/visibility/check",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "visibility", "check"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Generate Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"website_id\": \"uuid-here\",\n  \"include_charts\": true,\n  \"send_email\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/generate",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "reports", "generate"]
+            }
+          }
+        },
+        {
+          "name": "Email Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"report_id\": \"uuid-here\",\n  \"recipient_email\": \"user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/email",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "reports", "email"]
+            }
+          }
+        },
+        {
+          "name": "Get Report",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/reports/:report_id",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "reports", ":report_id"],
+              "variable": [
+                {
+                  "key": "report_id",
+                  "value": "uuid-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Website Reports",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/v1/reports/website/:website_id",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "reports", "website", ":website_id"],
+              "variable": [
+                {
+                  "key": "website_id",
+                  "value": "uuid-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Get Current Subscription",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/subscriptions/current",
+              "host": ["{{base_url}}"],
+              "path": ["api", "subscriptions", "current"]
+            }
+          }
+        },
+        {
+          "name": "Create Portal Session",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/subscriptions/create-portal-session",
+              "host": ["{{base_url}}"],
+              "path": ["api", "subscriptions", "create-portal-session"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Subscription",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/subscriptions/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["api", "subscriptions", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Reactivate Subscription",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/subscriptions/reactivate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "subscriptions", "reactivate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -16,9 +16,32 @@ class Settings(BaseSettings):
     debug: bool = False
 
     # Security
-    secret_key: str = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+    secret_key: str = Field(
+        default_factory=lambda: os.getenv("SECRET_KEY"),
+        description="JWT secret key - MUST be set in environment variables"
+    )
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
+
+    @field_validator('secret_key')
+    @classmethod
+    def validate_secret_key(cls, v):
+        if not v:
+            raise ValueError(
+                "SECRET_KEY environment variable is required and must be set. "
+                "Generate a secure key using: openssl rand -hex 32"
+            )
+        if len(v) < 32:
+            raise ValueError(
+                "SECRET_KEY must be at least 32 characters long for security. "
+                "Generate a secure key using: openssl rand -hex 32"
+            )
+        if v in ["your-secret-key-change-in-production", "changeme", "secret", "default"]:
+            raise ValueError(
+                "SECRET_KEY is using an insecure default value. "
+                "Generate a secure key using: openssl rand -hex 32"
+            )
+        return v
 
     # CORS - can be set as comma-separated string in env var
     cors_origins: Union[List[str], str] = Field(
@@ -59,8 +82,10 @@ class Settings(BaseSettings):
     # S3 (for snapshots)
     s3_bucket_snapshots: str = os.getenv("S3_BUCKET_SNAPSHOTS", "aiindex-snapshots")
 
-    # OpenAI (for embeddings)
+    # AI Provider API Keys (for embeddings, schema generation, and visibility features)
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+    anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "")
+    perplexity_api_key: str = os.getenv("PERPLEXITY_API_KEY", "")
 
     # Pinecone (for vector search)
     pinecone_api_key: str = os.getenv("PINECONE_API_KEY", "")
@@ -74,6 +99,21 @@ class Settings(BaseSettings):
     # Monitoring
     sentry_dsn: str = os.getenv("SENTRY_DSN", "")
     log_level: str = os.getenv("LOG_LEVEL", "INFO")
+
+    # Stripe configuration (optional)
+    stripe_secret_key: str = os.getenv("STRIPE_SECRET_KEY", "")
+    stripe_webhook_secret: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
+    # Application URLs
+    app_url: str = os.getenv("APP_URL", "https://app.iaindex.org")
+    site_url: str = os.getenv("SITE_URL", "https://scan.iaindex.org")
+
+    # Email service configuration
+    sendgrid_api_key: str = os.getenv("SENDGRID_API_KEY", "")
+    sendgrid_webhook_verification_key: str = os.getenv("SENDGRID_WEBHOOK_VERIFICATION_KEY", "")
+    resend_api_key: str = os.getenv("RESEND_API_KEY", "")
+    from_email: str = os.getenv("FROM_EMAIL", "noreply@iaindex.org")
+    from_name: str = os.getenv("FROM_NAME", "IAIndex")
 
     @field_validator('cors_origins', mode='before')
     @classmethod

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visibility Alert for {{ website_url }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .alert-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-block;
+            text-align: center;
+            line-height: 60px;
+            font-size: 30px;
+            color: white;
+            margin: 20px 0;
+        }
+        .alert-icon-up {
+            background-color: #10b981;
+        }
+        .alert-icon-down {
+            background-color: #ef4444;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .change-box {
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .change-box-up {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        .change-box-down {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        .score-comparison {
+            display: table;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .score-item {
+            display: table-cell;
+            text-align: center;
+            padding: 15px;
+        }
+        .score-value {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .score-label {
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        .arrow {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 30px;
+            width: 60px;
+        }
+        .button {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        .info-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .recommendation-card {
+            background-color: #f9fafb;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border-left: 4px solid #6366f1;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">IAIndex</div>
+            <div class="alert-icon {{ 'alert-icon-up' if is_improvement else 'alert-icon-down' }}">
+                {{ '↑' if is_improvement else '↓' }}
+            </div>
+        </div>
+
+        {% if is_improvement %}
+        <h1 style="color: #059669;">Great News! Visibility Increased</h1>
+        {% else %}
+        <h1 style="color: #dc2626;">Visibility Alert: Score Decreased</h1>
+        {% endif %}
+
+        <p>We detected a significant change in AI visibility for <strong>{{ website_url }}</strong>.</p>
+
+        <div class="change-box {{ 'change-box-up' if is_improvement else 'change-box-down' }}">
+            <div style="font-size: 18px; margin-bottom: 15px;">Visibility Change</div>
+
+            <div class="score-comparison">
+                <div class="score-item">
+                    <div class="score-value">{{ old_score }}</div>
+                    <div class="score-label">Previous Score</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="score-item">
+                    <div class="score-value">{{ new_score }}</div>
+                    <div class="score-label">Current Score</div>
+                </div>
+            </div>
+
+            <div style="font-size: 24px; font-weight: bold; margin-top: 15px;">
+                {{ '+' if change_percent > 0 else '' }}{{ change_percent }}% change
+            </div>
+        </div>
+
+        {% if is_improvement %}
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">What's Working Well</h2>
+
+        <div class="info-box" style="background-color: #d1fae5; border-left-color: #10b981;">
+            <strong>Keep up the great work!</strong> Your visibility improvements suggest your recent optimizations are paying off.
+        </div>
+
+        <p>Possible reasons for improvement:</p>
+        <ul>
+            <li><strong>Updated schema markup</strong> - Better structured data helps AI understand your content</li>
+            <li><strong>Fresh, quality content</strong> - Recent updates make you more relevant</li>
+            <li><strong>Improved authority signals</strong> - More backlinks and citations</li>
+            <li><strong>Better keyword targeting</strong> - Content aligns with AI queries</li>
+        </ul>
+
+        <h3 style="color: #1e40af; font-size: 16px; margin-top: 30px;">Next Steps to Maintain Growth</h3>
+
+        <div class="recommendation-card">
+            <strong>1. Document what changed</strong><br>
+            Review recent updates to understand what drove the improvement.
+        </div>
+
+        <div class="recommendation-card">
+            <strong>2. Apply learnings to other pages</strong><br>
+            Replicate successful strategies across your entire site.
+        </div>
+
+        <div class="recommendation-card">
+            <strong>3. Keep content fresh</strong><br>
+            Maintain your momentum with regular updates.
+        </div>
+
+        {% else %}
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Why This Happened</h2>
+
+        <div class="info-box" style="background-color: #fee2e2; border-left-color: #ef4444;">
+            <strong>Action needed:</strong> A visibility decrease requires investigation and optimization.
+        </div>
+
+        <p>Common causes of visibility decline:</p>
+        <ul>
+            <li><strong>Outdated content</strong> - AI engines prefer recent, current information</li>
+            <li><strong>Schema issues</strong> - Broken or missing structured data markup</li>
+            <li><strong>Technical problems</strong> - Site speed, crawling, or indexing issues</li>
+            <li><strong>Competitor improvements</strong> - Others in your space are optimizing faster</li>
+            <li><strong>Algorithm updates</strong> - Changes in how AI engines rank content</li>
+        </ul>
+
+        <h3 style="color: #1e40af; font-size: 16px; margin-top: 30px;">Recommended Actions</h3>
+
+        <div class="recommendation-card">
+            <strong>1. Check for technical issues</strong><br>
+            Verify your schema markup is valid and your site is crawlable.
+        </div>
+
+        <div class="recommendation-card">
+            <strong>2. Update your content</strong><br>
+            Refresh outdated information and add new, valuable content.
+        </div>
+
+        <div class="recommendation-card">
+            <strong>3. Review recommendations</strong><br>
+            Implement the personalized optimization tips in your dashboard.
+        </div>
+
+        <div class="recommendation-card">
+            <strong>4. Monitor competitors</strong><br>
+            See what others in your industry are doing differently.
+        </div>
+        {% endif %}
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ dashboard_url }}/websites/{{ website_url | urlencode }}" class="button">View Detailed Analysis</a>
+        </div>
+
+        <div class="info-box">
+            <strong>Need help?</strong><br>
+            Our team can provide personalized optimization recommendations.
+            <a href="mailto:support@iaindex.org" style="color: #2563eb;">Contact support</a> for a free consultation.
+        </div>
+
+        <h2 style="color: #1e40af; font-size: 18px; margin-top: 30px;">Stay Informed</h2>
+
+        <p>We'll continue monitoring your visibility and alert you to significant changes. You can adjust alert sensitivity in your dashboard settings.</p>
+
+        <p style="margin-top: 20px;">
+            <a href="{{ dashboard_url }}/settings/alerts" style="color: #2563eb; text-decoration: none;">Configure Alert Settings →</a>
+        </p>
+
+        <div class="footer">
+            <p>You're receiving this alert because significant visibility changes were detected.</p>
+            <p>&copy; 2025 IAIndex. All rights reserved.</p>
+            <p>IAIndex Inc., 123 Tech Street, San Francisco, CA 94102</p>
+            <p>
+                <a href="{{ dashboard_url }}/settings/email-preferences" style="color: #2563eb;">Email Preferences</a> |
+                <a href="{{ unsubscribe_url }}" style="color: #6b7280;">Unsubscribe</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
